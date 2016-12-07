@@ -13,7 +13,7 @@ so please don't judge me too much :-) I know this looks a bit rough! The point w
 
 The idea is to use: -
 * An off-the-shelf OCR library, e.g. Tesseract https://github.com/tesseract-ocr/tesseract
-* A basic backtracking Sudoku solving algorythm https://en.wikipedia.org/wiki/Sudoku_solving_algorithms
+* A basic backtracking Sudoku solving algorithm https://en.wikipedia.org/wiki/Sudoku_solving_algorithms
 
 ##ToDo
 
