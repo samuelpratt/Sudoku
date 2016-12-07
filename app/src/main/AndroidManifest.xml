@@ -16,7 +16,10 @@
         </activity>
         <activity android:name=".TakeAPictureActivity"/>
     </application>
+    <!-- required to use Camera App -->
     <uses-feature android:name="android.hardware.camera"
         android:required="true" />
+    <!-- required to store camera picture -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>
