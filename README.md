@@ -17,8 +17,8 @@ The idea is to use: -
 
 ##ToDo
 
-~~* Work out how to create a basic Android App
-* Take a picture and show a preview~~
+* ~~Work out how to create a basic Android App~~
+* ~~Take a picture and show a preview~~
 * Get the image from the SD Card
 * Analyse the image to get the Sudoku grid
 * Solve the puzzle
