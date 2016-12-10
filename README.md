@@ -21,4 +21,4 @@ The idea is to use: -
 * ~~Take a picture and show a preview~~
 * Get the image from the SD Card
 * Analyse the image to get the Sudoku grid
-* Solve the puzzle
+* ~~Solve the puzzle~~
