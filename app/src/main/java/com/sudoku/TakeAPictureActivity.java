@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.ImageView;
 
+//Based on https://developer.android.com/training/camera/photobasics.html
 public class TakeAPictureActivity extends Activity{
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
