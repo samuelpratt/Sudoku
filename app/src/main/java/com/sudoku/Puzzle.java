@@ -1,21 +1,24 @@
 package com.sudoku;
 
-import android.graphics.Point;
-
 public class Puzzle {
 
     public int Size = 9;
     private Integer[][] Numbers;
-
-    public Puzzle() {
-        InitNumbers();
-    }
 
     public Puzzle(Puzzle toCopy) {
         InitNumbers();
         for (int x = 0; x < Size; x++) {
             for (int y = 0; y < Size; y++) {
                 Numbers[x][y] = toCopy.GetNumber(new Point(x, y));
+            }
+        }
+    }
+
+    public Puzzle(Integer[][] problem) {
+        InitNumbers();
+        for (int x = 0; x < Size; x++) {
+            for (int y = 0; y < Size; y++) {
+                SetNumber(new Point(x, y), problem[x][y]);
             }
         }
     }
@@ -37,7 +40,14 @@ public class Puzzle {
         Numbers[point.x][point.y] = value;
     }
 
-    private void AssertValidValue(int value) {
+    public void EraseNumber(Point point) throws IllegalArgumentException {
+        AssertValidIndexes(point);
+        SetNumber(point, null);
+    }
+
+    private void AssertValidValue(Integer value) {
+        if (value == null)
+            return;
         if (value < 1 || value > Size)
             throw new IllegalArgumentException("Value must be greater than 0 and less than the Size of the grid.");
     }

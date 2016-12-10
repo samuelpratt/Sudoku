@@ -1,7 +1,5 @@
 package com.sudoku;
 
-import android.graphics.Point;
-
 /**
  * Based on https://see.stanford.edu/materials/icspacs106b/Lecture11.pdf
  */
@@ -27,7 +25,7 @@ public class PuzzleSolver {
             if (NoConflicts(workingPuzzle, workingPoint, num)) {
                 workingPuzzle.SetNumber(workingPoint, num);
                 if (Solve(workingPuzzle)) return true;
-                workingPuzzle.SetNumber(workingPoint, null); // undo & try again
+                workingPuzzle.EraseNumber(workingPoint); // undo & try again
             }
         }
         return false; // this triggers backtracking from early decisions
