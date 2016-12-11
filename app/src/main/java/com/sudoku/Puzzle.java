@@ -9,10 +9,10 @@ class Puzzle {
 
     Puzzle(Puzzle toCopy) {
         InitNumbers();
-        for (int x = 0; x < Size; x++) {
-            for (int y = 0; y < Size; y++) {
-                Numbers[x][y] = toCopy.GetNumber(new Point(x, y));
-            }
+        for (Points points = new Points(); points.hasNext(); ) {
+            Point p = points.next();
+            Numbers[p.x][p.y] = toCopy.GetNumber(p);
+
         }
     }
 
@@ -60,14 +60,13 @@ class Puzzle {
     }
 
     Point FindUnassignedLocation() {
-        for (int x = 0; x < Size; x++) {
-            for (int y = 0; y < Size; y++) {
-                Point currentPoint = new Point(x, y);
-                if (GetNumber(currentPoint) == null) {
-                    return currentPoint;
-                }
+        for (Points points = new Points(); points.hasNext(); ) {
+            Point currentPoint = points.next();
+            if (GetNumber(currentPoint) == null) {
+                return currentPoint;
             }
         }
+
         return null;
     }
 
