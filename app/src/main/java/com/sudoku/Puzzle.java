@@ -1,11 +1,13 @@
 package com.sudoku;
 
-public class Puzzle {
+class Puzzle {
 
-    public int Size = 9;
+    int MaxValue = 9;
+    int MinValue = 1;
+    private int Size = 9;
     private Integer[][] Numbers;
 
-    public Puzzle(Puzzle toCopy) {
+    Puzzle(Puzzle toCopy) {
         InitNumbers();
         for (int x = 0; x < Size; x++) {
             for (int y = 0; y < Size; y++) {
@@ -14,7 +16,7 @@ public class Puzzle {
         }
     }
 
-    public Puzzle(Integer[][] problem) {
+    Puzzle(Integer[][] problem) {
         InitNumbers();
         for (int x = 0; x < Size; x++) {
             for (int y = 0; y < Size; y++) {
@@ -34,13 +36,13 @@ public class Puzzle {
             throw new IllegalArgumentException("Y is out of range.");
     }
 
-    public void SetNumber(Point point, Integer value) throws IllegalArgumentException {
+    void SetNumber(Point point, Integer value) throws IllegalArgumentException {
         AssertValidIndexes(point);
         AssertValidValue(value);
         Numbers[point.x][point.y] = value;
     }
 
-    public void EraseNumber(Point point) throws IllegalArgumentException {
+    void EraseNumber(Point point) throws IllegalArgumentException {
         AssertValidIndexes(point);
         SetNumber(point, null);
     }
@@ -48,12 +50,37 @@ public class Puzzle {
     private void AssertValidValue(Integer value) {
         if (value == null)
             return;
-        if (value < 1 || value > Size)
+        if (value < MinValue || value > MaxValue)
             throw new IllegalArgumentException("Value must be greater than 0 and less than the Size of the grid.");
     }
 
-    public Integer GetNumber(Point point) throws IllegalArgumentException {
+    private Integer GetNumber(Point point) throws IllegalArgumentException {
         AssertValidIndexes(point);
         return Numbers[point.x][point.y];
+    }
+
+    Point FindUnassignedLocation() {
+        for (int x = 0; x < Size; x++) {
+            for (int y = 0; y < Size; y++) {
+                Point currentPoint = new Point(x, y);
+                if (GetNumber(currentPoint) == null) {
+                    return currentPoint;
+                }
+            }
+        }
+        return null;
+    }
+
+    @SuppressWarnings("NumberEquality")
+    Boolean NoConflicts(Point point, Integer number) {
+        for (int x = 0; x < Size; x++) {
+            if (GetNumber(new Point(x, point.y)) == number)
+                return false;
+        }
+        for (int y = 0; y < Size; y++) {
+            if (GetNumber(new Point(point.x, y)) == number)
+                return false;
+        }
+        return true;
     }
 }
