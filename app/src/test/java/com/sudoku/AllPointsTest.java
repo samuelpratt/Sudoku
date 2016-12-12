@@ -4,11 +4,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 
-public class PointsTest {
+public class AllPointsTest {
 
     @Test
     public void NewInstance_GetElement_ReturnsTopLeft() {
-        Points sut = new Points();
+        AllPoints sut = new AllPoints();
 
         Point firstElement = sut.next();
 
@@ -18,7 +18,7 @@ public class PointsTest {
 
     @Test
     public void InstanceWithOneElementEnumerated_GetElement_ReturnsTopRowSecondCol() {
-        Points sut = new Points();
+        AllPoints sut = new AllPoints();
         sut.next();
 
         Point secondElement = sut.next();
@@ -29,28 +29,28 @@ public class PointsTest {
 
     @Test
     public void NewInstance_hasMoreElements_ReturnsTrue() {
-        Points sut = new Points();
+        AllPoints sut = new AllPoints();
 
         Assert.assertTrue(sut.hasNext());
     }
 
     @Test
     public void EmptyInstance_hasMoreElements_ReturnsFalse() {
-        Points sut = new Points();
+        AllPoints sut = new AllPoints();
         GetAllPoints(sut);
 
         Assert.assertFalse(sut.hasNext());
 
     }
 
-    private void GetAllPoints(Points sut) {
+    private void GetAllPoints(AllPoints sut) {
         for (int i = 0; i < 9 * 9; i++)
             sut.next();
     }
 
     @Test
     public void FirstRowRetrived_NextElement_ElementIsFirstColOfSecondRow() {
-        Points sut = new Points();
+        AllPoints sut = new AllPoints();
         GetFirstRow(sut);
 
         Point element = sut.next();
@@ -58,7 +58,7 @@ public class PointsTest {
         Assert.assertEquals(1, element.y);
     }
 
-    private void GetFirstRow(Points sut) {
+    private void GetFirstRow(AllPoints sut) {
         for (int i = 0; i < 9; i++)
             sut.next();
     }

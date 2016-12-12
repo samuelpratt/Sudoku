@@ -2,15 +2,20 @@ package com.sudoku;
 
 class Puzzle {
 
-    int MaxValue = 9;
-    int MinValue = 1;
-    private int Size = 9;
+    static int MaxValue = 9;
+    static int MinValue = 1;
+    static int Size = 9;
+
     private Integer[][] Numbers;
+
+    Puzzle() {
+        InitNumbers();
+    }
 
     Puzzle(Puzzle toCopy) {
         InitNumbers();
-        for (Points points = new Points(); points.hasNext(); ) {
-            Point p = points.next();
+        for (AllPoints allPoints = new AllPoints(); allPoints.hasNext(); ) {
+            Point p = allPoints.next();
             Numbers[p.x][p.y] = toCopy.GetNumber(p);
 
         }
@@ -18,10 +23,9 @@ class Puzzle {
 
     Puzzle(Integer[][] problem) {
         InitNumbers();
-        for (int x = 0; x < Size; x++) {
-            for (int y = 0; y < Size; y++) {
-                SetNumber(new Point(x, y), problem[x][y]);
-            }
+        for (AllPoints allPoints = new AllPoints(); allPoints.hasNext(); ) {
+            Point p = allPoints.next();
+            SetNumber(p, problem[p.x][p.y]);
         }
     }
 
@@ -59,9 +63,9 @@ class Puzzle {
         return Numbers[point.x][point.y];
     }
 
-    Point FindUnassignedLocation() {
-        for (Points points = new Points(); points.hasNext(); ) {
-            Point currentPoint = points.next();
+    Point FindNextUnassignedLocation() {
+        for (AllPoints allPoints = new AllPoints(); allPoints.hasNext(); ) {
+            Point currentPoint = allPoints.next();
             if (GetNumber(currentPoint) == null) {
                 return currentPoint;
             }
@@ -70,16 +74,28 @@ class Puzzle {
         return null;
     }
 
-    @SuppressWarnings("NumberEquality")
     Boolean NoConflicts(Point point, Integer number) {
-        for (int x = 0; x < Size; x++) {
-            if (GetNumber(new Point(x, point.y)) == number)
-                return false;
+        if (IsRowConflict(point.y, number)) return false;
+        return !IsColumnConflict(point.x, number);
+    }
+
+    @SuppressWarnings("NumberEquality")
+    private boolean IsRowConflict(int y, Integer number) {
+        for (RowPoints rowPoints = new RowPoints(y); rowPoints.hasNext(); ) {
+            Point rowPoint = rowPoints.next();
+            if (GetNumber(rowPoint) == number)
+                return true;
         }
-        for (int y = 0; y < Size; y++) {
-            if (GetNumber(new Point(point.x, y)) == number)
-                return false;
+        return false;
+    }
+
+    @SuppressWarnings("NumberEquality")
+    private boolean IsColumnConflict(int x, Integer number) {
+        for (ColumnPoints colPoints = new ColumnPoints(x); colPoints.hasNext(); ) {
+            Point colPoint = colPoints.next();
+            if (GetNumber(colPoint) == number)
+                return true;
         }
-        return true;
+        return false;
     }
 }

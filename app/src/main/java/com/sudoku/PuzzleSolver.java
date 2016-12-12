@@ -18,10 +18,10 @@ class PuzzleSolver {
     }
 
     private Boolean Solve(Puzzle workingPuzzle) {
-        Point workingPoint = workingPuzzle.FindUnassignedLocation();
+        Point workingPoint = workingPuzzle.FindNextUnassignedLocation();
         if (workingPoint == null)
             return true;
-        for (Integer num = workingPuzzle.MinValue; num <= workingPuzzle.MaxValue; num++) {
+        for (Integer num = Puzzle.MinValue; num <= Puzzle.MaxValue; num++) {
             if (workingPuzzle.NoConflicts(workingPoint, num)) {
                 workingPuzzle.SetNumber(workingPoint, num);
                 if (Solve(workingPuzzle))

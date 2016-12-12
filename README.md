@@ -15,10 +15,10 @@ The idea is to use: -
 * An off-the-shelf OCR library, e.g. Tesseract https://github.com/tesseract-ocr/tesseract
 * A basic backtracking Sudoku solving algorithm https://see.stanford.edu/materials/icspacs106b/Lecture11.pdf
 
-## ToDo
+## //TODO:
 
 * ~~Work out how to create a basic Android App~~
 * ~~Take a picture and show a preview~~
-* Get the image from the SD Card
-* Analyse the image to get the Sudoku grid
+* Get the image from the SD Card (look at https://developer.android.com/training/camera/photobasics.html#TaskPath)
+* Analyse the image to get the Sudoku grid (look at http://sudokugrab.blogspot.co.uk/2009/07/how-does-it-all-work.html)
 * ~~Solve the puzzle~~
