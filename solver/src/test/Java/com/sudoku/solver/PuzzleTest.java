@@ -1,4 +1,4 @@
-package com.sudoku;
+package com.sudoku.solver;
 
 import org.junit.Assert;
 import org.junit.Test;
