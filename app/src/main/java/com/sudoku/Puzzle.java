@@ -58,7 +58,7 @@ class Puzzle {
             throw new IllegalArgumentException("Value must be greater than 0 and less than the Size of the grid.");
     }
 
-    private Integer GetNumber(Point point) throws IllegalArgumentException {
+    Integer GetNumber(Point point) throws IllegalArgumentException {
         AssertValidIndexes(point);
         return Numbers[point.x][point.y];
     }
