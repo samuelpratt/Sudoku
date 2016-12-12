@@ -18,8 +18,8 @@ public class PuzzleSolverTest {
                 {6, null, null, null, 1, 2, null, null, null},
                 {9, 3, null, null, null, null, 7, 1, null}};
         Puzzle puzzle = new Puzzle(problem);
-        PuzzleSolver solver = new PuzzleSolver(puzzle);
-        Puzzle solvedPuzzle = solver.SolvePuzzle();
+        Solver solver = new Solver(puzzle);
+        Puzzle solvedPuzzle = solver.solvePuzzle();
         System.out.println(solvedPuzzle);
 
 

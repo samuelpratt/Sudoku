@@ -2,71 +2,71 @@ package com.sudoku;
 
 class Puzzle {
 
-    static int MaxValue = 9;
-    static int MinValue = 1;
-    static int Size = 9;
+    static int MAX_VALUE = 9;
+    static int MIN_VALUE = 1;
+    static int SIZE = 9;
 
     private Integer[][] Numbers;
 
     Puzzle() {
-        InitNumbers();
+        initNumbers();
     }
 
     Puzzle(Puzzle toCopy) {
-        InitNumbers();
+        initNumbers();
         for (AllPoints allPoints = new AllPoints(); allPoints.hasNext(); ) {
             Point p = allPoints.next();
-            Numbers[p.x][p.y] = toCopy.GetNumber(p);
+            Numbers[p.x][p.y] = toCopy.getNumber(p);
 
         }
     }
 
     Puzzle(Integer[][] problem) {
-        InitNumbers();
+        initNumbers();
         for (AllPoints allPoints = new AllPoints(); allPoints.hasNext(); ) {
             Point p = allPoints.next();
-            SetNumber(p, problem[p.x][p.y]);
+            setNumber(p, problem[p.x][p.y]);
         }
     }
 
-    private void InitNumbers() {
-        this.Numbers = new Integer[Size][Size];
+    private void initNumbers() {
+        this.Numbers = new Integer[SIZE][SIZE];
     }
 
     private void AssertValidIndexes(Point point) throws IllegalArgumentException {
-        if (point.x < 0 || point.x > Size - 1)
+        if (point.x < 0 || point.x > SIZE - 1)
             throw new IllegalArgumentException("X is out of range.");
-        if (point.y < 0 || point.y > Size - 1)
+        if (point.y < 0 || point.y > SIZE - 1)
             throw new IllegalArgumentException("Y is out of range.");
     }
 
-    void SetNumber(Point point, Integer value) throws IllegalArgumentException {
+    void setNumber(Point point, Integer value) throws IllegalArgumentException {
         AssertValidIndexes(point);
-        AssertValidValue(value);
+        assertValidValue(value);
         Numbers[point.x][point.y] = value;
     }
 
-    void EraseNumber(Point point) throws IllegalArgumentException {
+    void eraseNumber(Point point) throws IllegalArgumentException {
         AssertValidIndexes(point);
-        SetNumber(point, null);
+        setNumber(point, null);
     }
 
-    private void AssertValidValue(Integer value) {
+    private void assertValidValue(Integer value) {
         if (value == null)
             return;
-        if (value < MinValue || value > MaxValue)
-            throw new IllegalArgumentException("Value must be greater than 0 and less than the Size of the grid.");
+        if (value < MIN_VALUE || value > MAX_VALUE)
+            throw new IllegalArgumentException("Value must be greater than 0 and less than the SIZE of the grid.");
     }
 
-    Integer GetNumber(Point point) throws IllegalArgumentException {
+    Integer getNumber(Point point) throws IllegalArgumentException {
         AssertValidIndexes(point);
         return Numbers[point.x][point.y];
     }
 
-    Point FindNextUnassignedLocation() {
+    Point findNextUnassignedLocation() {
         for (AllPoints allPoints = new AllPoints(); allPoints.hasNext(); ) {
             Point currentPoint = allPoints.next();
-            if (GetNumber(currentPoint) == null) {
+            if (getNumber(currentPoint) == null) {
                 return currentPoint;
             }
         }
@@ -74,26 +74,26 @@ class Puzzle {
         return null;
     }
 
-    Boolean NoConflicts(Point point, Integer number) {
-        if (IsRowConflict(point.y, number)) return false;
-        return !IsColumnConflict(point.x, number);
+    Boolean noConflicts(Point point, Integer number) {
+        if (isRowConflict(point.y, number)) return false;
+        return !isColumnConflict(point.x, number);
     }
 
     @SuppressWarnings("NumberEquality")
-    private boolean IsRowConflict(int y, Integer number) {
+    private boolean isRowConflict(int y, Integer number) {
         for (RowPoints rowPoints = new RowPoints(y); rowPoints.hasNext(); ) {
             Point rowPoint = rowPoints.next();
-            if (GetNumber(rowPoint) == number)
+            if (getNumber(rowPoint) == number)
                 return true;
         }
         return false;
     }
 
     @SuppressWarnings("NumberEquality")
-    private boolean IsColumnConflict(int x, Integer number) {
+    private boolean isColumnConflict(int x, Integer number) {
         for (ColumnPoints colPoints = new ColumnPoints(x); colPoints.hasNext(); ) {
             Point colPoint = colPoints.next();
-            if (GetNumber(colPoint) == number)
+            if (getNumber(colPoint) == number)
                 return true;
         }
         return false;

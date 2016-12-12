@@ -13,9 +13,9 @@ public class PuzzleTest {
 
         Puzzle sut = new Puzzle();
 
-        sut.SetNumber(FirstRowFirstCol, value);
+        sut.setNumber(FirstRowFirstCol, value);
 
-        Assert.assertFalse(sut.NoConflicts(FirstRowSecondCol, value));
+        Assert.assertFalse(sut.noConflicts(FirstRowSecondCol, value));
     }
 
     @Test
@@ -27,9 +27,9 @@ public class PuzzleTest {
 
         Puzzle sut = new Puzzle();
 
-        sut.SetNumber(FirstRowFirstCol, value);
+        sut.setNumber(FirstRowFirstCol, value);
 
-        Assert.assertTrue(sut.NoConflicts(FirstRowSecondCol, otherValue));
+        Assert.assertTrue(sut.noConflicts(FirstRowSecondCol, otherValue));
     }
 
     @Test
@@ -40,9 +40,9 @@ public class PuzzleTest {
 
         Puzzle sut = new Puzzle();
 
-        sut.SetNumber(FirstRowFirstCol, value);
+        sut.setNumber(FirstRowFirstCol, value);
 
-        Assert.assertFalse(sut.NoConflicts(SecondRowFirstCol, value));
+        Assert.assertFalse(sut.noConflicts(SecondRowFirstCol, value));
     }
 
     @Test
@@ -54,9 +54,9 @@ public class PuzzleTest {
 
         Puzzle sut = new Puzzle();
 
-        sut.SetNumber(FirstRowFirstCol, value);
+        sut.setNumber(FirstRowFirstCol, value);
 
-        Assert.assertTrue(sut.NoConflicts(SecondRowFirstCol, otherValue));
+        Assert.assertTrue(sut.noConflicts(SecondRowFirstCol, otherValue));
     }
 
     @Test
@@ -65,59 +65,59 @@ public class PuzzleTest {
         Point validPoint = new Point(0, 0);
         Integer validNumber = 1;
 
-        sut.SetNumber(validPoint, validNumber);
+        sut.setNumber(validPoint, validNumber);
 
-        Assert.assertEquals(validNumber, sut.GetNumber(validPoint));
+        Assert.assertEquals(validNumber, sut.getNumber(validPoint));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void NumberTooBig_SetNumber_IllegalArgumentExceptionThrown() {
         Puzzle sut = new Puzzle();
         Point validPoint = new Point(0, 0);
-        Integer invalidNumber = Puzzle.MaxValue + 1;
+        Integer invalidNumber = Puzzle.MAX_VALUE + 1;
 
-        sut.SetNumber(validPoint, invalidNumber);
+        sut.setNumber(validPoint, invalidNumber);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void NumberTooSmall_SetNumber_IllegalArgumentExceptionThrown() {
         Puzzle sut = new Puzzle();
         Point validPoint = new Point(0, 0);
-        Integer invalidNumber = Puzzle.MinValue - 1;
+        Integer invalidNumber = Puzzle.MIN_VALUE - 1;
 
-        sut.SetNumber(validPoint, invalidNumber);
+        sut.setNumber(validPoint, invalidNumber);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void InvalidRow_SetNumber_IllegalArgumentExceptionThrown() {
         Puzzle sut = new Puzzle();
-        Point invalidPoint = new Point(0, Puzzle.Size + 1);
+        Point invalidPoint = new Point(0, Puzzle.SIZE + 1);
         Integer validNumber = 0;
 
-        sut.SetNumber(invalidPoint, validNumber);
+        sut.setNumber(invalidPoint, validNumber);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void InvalidCol_SetNumber_IllegalArgumentExceptionThrown() {
         Puzzle sut = new Puzzle();
-        Point invalidPoint = new Point(Puzzle.Size + 1, 0);
+        Point invalidPoint = new Point(Puzzle.SIZE + 1, 0);
         Integer validNumber = 0;
 
-        sut.SetNumber(invalidPoint, validNumber);
+        sut.setNumber(invalidPoint, validNumber);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void InvalidCol_GetNumber_IllegalArgumentExceptionThrown() {
         Puzzle sut = new Puzzle();
-        Point invalidPoint = new Point(Puzzle.Size + 1, 0);
-        sut.GetNumber(invalidPoint);
+        Point invalidPoint = new Point(Puzzle.SIZE + 1, 0);
+        sut.getNumber(invalidPoint);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void InvalidRow_GetNumber_IllegalArgumentExceptionThrown() {
         Puzzle sut = new Puzzle();
-        Point invalidPoint = new Point(0, Puzzle.Size + 1);
-        sut.GetNumber(invalidPoint);
+        Point invalidPoint = new Point(0, Puzzle.SIZE + 1);
+        sut.getNumber(invalidPoint);
     }
 
     @Test
@@ -125,33 +125,33 @@ public class PuzzleTest {
         Puzzle sut = new Puzzle();
         Point validPoint = new Point(0, 0);
         Integer validNumber = 7;
-        sut.SetNumber(validPoint, validNumber);
+        sut.setNumber(validPoint, validNumber);
 
-        sut.EraseNumber(validPoint);
+        sut.eraseNumber(validPoint);
 
-        Assert.assertEquals(null, sut.GetNumber(validPoint));
+        Assert.assertEquals(null, sut.getNumber(validPoint));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void InvalidPoint_EraseNumber_IllegalArgumentExceptionThrown() {
         Puzzle sut = new Puzzle();
-        Point validPoint = new Point(Puzzle.Size + 1, 0);
+        Point validPoint = new Point(Puzzle.SIZE + 1, 0);
 
-        sut.EraseNumber(validPoint);
+        sut.eraseNumber(validPoint);
     }
 
     @Test
     public void ValidPuzzle_PassedToCtor_AllPointsMatch() {
         Puzzle original = new Puzzle();
-        original.SetNumber(new Point(1, 5), 5);
-        original.SetNumber(new Point(3, 6), 7);
-        original.SetNumber(new Point(2, 7), 8);
+        original.setNumber(new Point(1, 5), 5);
+        original.setNumber(new Point(3, 6), 7);
+        original.setNumber(new Point(2, 7), 8);
 
         Puzzle sut = new Puzzle(original);
 
         for (AllPoints points = new AllPoints(); points.hasNext(); ) {
             Point currentPoint = points.next();
-            Assert.assertEquals(original.GetNumber(currentPoint), sut.GetNumber(currentPoint));
+            Assert.assertEquals(original.getNumber(currentPoint), sut.getNumber(currentPoint));
         }
     }
 
@@ -166,7 +166,7 @@ public class PuzzleTest {
 
         for (AllPoints points = new AllPoints(); points.hasNext(); ) {
             Point currentPoint = points.next();
-            Assert.assertEquals(valid2dArray[currentPoint.x][currentPoint.y], sut.GetNumber(currentPoint));
+            Assert.assertEquals(valid2dArray[currentPoint.x][currentPoint.y], sut.getNumber(currentPoint));
         }
     }
 }
