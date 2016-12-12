@@ -1,4 +1,4 @@
-package com.sudoku;
+package com.sudoku.solver;
 
 import java.util.Iterator;
 import java.util.Stack;
@@ -18,5 +18,10 @@ abstract class Points implements Iterator<Point> {
     @Override
     public Point next() {
         return points.pop();
+    }
+
+    @Override
+    public void remove() {
+        points.pop();
     }
 }

@@ -1,7 +1,5 @@
 package com.sudoku.solver;
 
-import android.support.annotation.NonNull;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -89,7 +87,6 @@ public class SolverTest {
         return solver.solvePuzzle();
     }
 
-    @NonNull
     private Integer[][] getPuzzle() {
         return new Integer[][]{
                 {null, null, 4, null, null, null, null, 6, 7},

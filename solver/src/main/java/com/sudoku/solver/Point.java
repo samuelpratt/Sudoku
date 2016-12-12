@@ -1,9 +1,9 @@
-package com.sudoku;
+package com.sudoku.solver;
 
 public class Point {
 
-    public int x;
-    public int y;
+    int x;
+    int y;
 
     public Point(int x, int y) {
         this.x = x;

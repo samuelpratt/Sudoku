@@ -1,4 +1,4 @@
-package com.sudoku;
+package com.sudoku.solver;
 
 /**
  * Based on https://see.stanford.edu/materials/icspacs106b/Lecture11.pdf

@@ -1,4 +1,4 @@
-package com.sudoku;
+package com.sudoku.solver;
 
 class RowPoints extends Points {
     RowPoints(int row) {
