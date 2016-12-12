@@ -22,3 +22,15 @@ The idea is to use: -
 * Get the image from the SD Card (look at https://developer.android.com/training/camera/photobasics.html#TaskPath)
 * Analyse the image to get the Sudoku grid (look at http://sudokugrab.blogspot.co.uk/2009/07/how-does-it-all-work.html)
 * ~~Solve the puzzle~~
+
+## Environment
+
+You will need: -
+
+* Android Studio
+* Android SDK 25 (Nougat)
+* You will need to install the android version of OpenCV
+from http://sourceforge.net/projects/opencvlibrary/files/opencv-android/3.1.0/OpenCV-3.1.0-android-sdk.zip/download
+using the instuctions from here http://blog.codeonion.com/2015/11/25/creating-a-new-opencv-project-in-android-studio/
+
+Open CV should be imported as a module called "openCVLibraryxxx" where xxx is the version e.g. openCVLibrary 310.
