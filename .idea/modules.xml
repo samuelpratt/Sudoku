@@ -6,7 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/openCVLibrary310-1/openCVLibrary310-1.iml" filepath="$PROJECT_DIR$/openCVLibrary310-1/openCVLibrary310-1.iml" />
       <module fileurl="file://$PROJECT_DIR$/puzzlescanner/puzzlescanner.iml" filepath="$PROJECT_DIR$/puzzlescanner/puzzlescanner.iml" />
-      <module fileurl="file://$PROJECT_DIR$/solver/solver.iml" filepath="$PROJECT_DIR$/solver/solver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/puzzlesolver/puzzlesolver.iml" filepath="$PROJECT_DIR$/puzzlesolver/puzzlesolver.iml" />
     </modules>
   </component>
 </project>

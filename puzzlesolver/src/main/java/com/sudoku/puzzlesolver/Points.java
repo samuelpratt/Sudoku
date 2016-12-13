@@ -1,4 +1,4 @@
-package com.sudoku.solver;
+package com.sudoku.puzzlesolver;
 
 import java.util.Iterator;
 import java.util.Stack;

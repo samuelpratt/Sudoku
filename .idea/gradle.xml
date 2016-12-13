@@ -12,7 +12,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/openCVLibrary310-1" />
             <option value="$PROJECT_DIR$/puzzlescanner" />
-            <option value="$PROJECT_DIR$/solver" />
+            <option value="$PROJECT_DIR$/puzzlesolver" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
