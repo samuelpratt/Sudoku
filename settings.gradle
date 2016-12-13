@@ -1,2 +1,2 @@
-include ':app', ':solver', ':scanner'
-include ':openCVLibrary310'
+include ':app', ':solver', ':puzzlescanner'
+include ':openCVLibrary310-1'

@@ -10,8 +10,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/openCVLibrary310" />
-            <option value="$PROJECT_DIR$/scanner" />
+            <option value="$PROJECT_DIR$/openCVLibrary310-1" />
+            <option value="$PROJECT_DIR$/puzzlescanner" />
             <option value="$PROJECT_DIR$/solver" />
           </set>
         </option>
