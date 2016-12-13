@@ -29,8 +29,16 @@ You will need: -
 
 * Android Studio
 * Android SDK 25 (Nougat)
-* You will need to install the android version of OpenCV
-from http://sourceforge.net/projects/opencvlibrary/files/opencv-android/3.1.0/OpenCV-3.1.0-android-sdk.zip/download
-using the instuctions from here http://blog.codeonion.com/2015/11/25/creating-a-new-opencv-project-in-android-studio/
+* OpenCV (see below)
 
-Open CV should be imported as a module called "openCVLibraryxxx" where xxx is the version e.g. openCVLibrary 310.
+### Installing OpenCV
+
+As I didn't want to check this in you will need to do the following: -
+
+* You will need to install the android version of OpenCV
+from http://sourceforge.net/projects/opencvlibrary/files/opencv-android/3.1.0/OpenCV-3.1.0-android-sdk.zip/download: -
+ * Use the instuctions from here http://blog.codeonion.com/2015/11/25/creating-a-new-opencv-project-in-android-studio/
+ * Open CV should be imported as a module called "openCVLibraryxxx-1" where xxx is the version e.g. openCVLibrary310-1.
+* In order to get the tests in the puzzlescanner module to run you will need to import the OpenCV native binaries into the project
+as the unit tests don't use OpenCV manager. To do this: -
+ * Copy the contents of OpenCV-android-sdk/sdk/native/libs to Sudoku/puzzlescanner/src/main/jnilibs/

@@ -1,4 +1,4 @@
 package com.sudoku.puzzlescanner;
 
-public class ColourFilter {
+class ColourFilter {
 }
