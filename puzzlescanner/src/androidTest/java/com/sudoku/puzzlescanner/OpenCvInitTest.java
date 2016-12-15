@@ -55,7 +55,7 @@ public class OpenCvInitTest {
     }
 
     private Mat convertBitMapToMat(Bitmap bmp) {
-        Mat tmp = new Mat(bmp.getWidth(), bmp.getHeight(), CvType.CV_8UC1);
+        Mat tmp = new Mat(bmp.getWidth(), bmp.getHeight(), CvType.CV_8SC4);
         Utils.bitmapToMat(bmp, tmp);
         Imgproc.cvtColor(tmp, tmp, Imgproc.COLOR_RGB2GRAY);
         Utils.matToBitmap(tmp, bmp);

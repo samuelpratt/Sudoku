@@ -20,7 +20,8 @@ The idea is to use: -
 * ~~Work out how to create a basic Android App~~
 * ~~Take a picture and show a preview~~
 * Get the image from the SD Card (look at https://developer.android.com/training/camera/photobasics.html#TaskPath)
-* Analyse the image to get the Sudoku grid (look at http://sudokugrab.blogspot.co.uk/2009/07/how-does-it-all-work.html)
+* Analyse the image to get the Sudoku grid (look at http://sudokugrab.blogspot.co.uk/2009/07/how-does-it-all-work.html
+& http://aishack.in/tutorials/sudoku-grabber-opencv-detection/)
 * ~~Solve the puzzle~~
 
 ## Environment
