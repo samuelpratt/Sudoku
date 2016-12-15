@@ -2,7 +2,12 @@
 
 ## What?
 
-Sam's free time project to write a simple Android Sudoku solver. Please bear in mind that I'm: -
+Sam's free time project to write a simple Android Sudoku solver App.
+
+The idea is that you will be able to take a picture of the puzzle and the App will extract the puzzle
+from the image and then solve it.
+
+Please bear in mind that I'm: -
 
 1. Not an App developer
 2. Not a graphic designer
