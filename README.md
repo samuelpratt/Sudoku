@@ -43,8 +43,8 @@ This involves: -
 * Thresholding the image to make it binary
 * Eroding the image (effectivly expanding lines) to fill in small gaps
 
-<a href="url"><img src="./docs/original.png" height="250" width="250" ></a>
-<a href="url"><img src="./docs/threshold.png" height="250" width="250" ></a>
+<img src="./docs/original.png" height="250" width="250" >
+<img src="./docs/threshold.png" height="250" width="250" >
 
 ## Solving the puzzle.
 
