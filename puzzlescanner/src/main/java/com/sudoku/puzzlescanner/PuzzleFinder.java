@@ -1,7 +1,5 @@
 package com.sudoku.puzzlescanner;
 
-import android.support.annotation.NonNull;
-
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -10,6 +8,8 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
+import static java.lang.Math.sin;
+import static java.lang.Math.tan;
 import static org.opencv.imgproc.Imgproc.ADAPTIVE_THRESH_MEAN_C;
 import static org.opencv.imgproc.Imgproc.THRESH_BINARY;
 
@@ -26,6 +26,7 @@ public class PuzzleFinder {
     private Mat greyMat;
     private Mat thresholdMat;
     private Mat largestBlobMat;
+    private Mat houghLinesMat;
 
     public PuzzleFinder(Mat mat) {
         originalMat = mat;
@@ -78,7 +79,6 @@ public class PuzzleFinder {
         eraseOtherBlobs(height, width);
     }
 
-    @NonNull
     private Point findLargestBlobOrigin(int height, int width) {
         Point maxBlobOrigin = new Point(0, 0);
 
@@ -118,5 +118,33 @@ public class PuzzleFinder {
                 }
             }
         }
+    }
+
+    public Mat findPuzzleLocation(Mat thresholdMat) {
+        Mat houghLinesMat = thresholdMat.clone();
+        Mat linesMat = thresholdMat.clone();
+        int width = thresholdMat.width();
+        int height = thresholdMat.height();
+
+        Imgproc.HoughLines(thresholdMat, houghLinesMat, (double) 1, Math.PI / 180, 200);
+
+        int lines = houghLinesMat.rows();
+        for (int x = 0; x < lines; x++) {
+            double[] vec = houghLinesMat.get(x, 0);
+            Vector vector = new Vector(vec[0], vec[1]);
+
+            if (vector.theta != 0) {
+                float m = (float) (-1 / tan(vector.theta));
+                float c = (float) (vector.rho / sin(vector.theta));
+                Imgproc.line(linesMat, new Point(0, c), new Point(width, m * width + c), GREY);
+            } else {
+                Imgproc.line(linesMat, new Point(vector.rho, 0), new Point(vector.rho, height), GREY);
+            }
+
+
+        }
+
+        return linesMat;
+
     }
 }
