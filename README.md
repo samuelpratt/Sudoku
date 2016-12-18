@@ -46,6 +46,17 @@ This involves: -
 <img src="./docs/original.png" height="250" width="250" >
 <img src="./docs/threshold.png" height="250" width="250" >
 
+### Extracting the Grid
+
+This involves: -
+
+* Isolating the grid from the rest of the image
+* Finding edges
+* Calculating the corners of the images
+* Stretching the image stright
+
+<img src="./docs/largestBlob.png" height="250" width="250" >
+
 ## Solving the puzzle.
 
 This is pretty easy. You can use a backtracking algorithm which
