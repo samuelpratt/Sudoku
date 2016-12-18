@@ -18,16 +18,41 @@ so please don't judge me too much :-) I know this looks a bit rough! The point w
 
 The idea is to use: -
 * An off-the-shelf OCR library, e.g. Tesseract https://github.com/tesseract-ocr/tesseract
-* A basic backtracking Sudoku solving algorithm https://see.stanford.edu/materials/icspacs106b/Lecture11.pdf
+* A basic backtracking Sudoku solving algorithm
 
 ## //TODO:
 
 * ~~Work out how to create a basic Android App~~
 * ~~Take a picture and show a preview~~
 * Get the image from the SD Card (look at https://developer.android.com/training/camera/photobasics.html#TaskPath)
-* Analyse the image to get the Sudoku grid (look at http://sudokugrab.blogspot.co.uk/2009/07/how-does-it-all-work.html
-& http://aishack.in/tutorials/sudoku-grabber-opencv-detection/)
+* Analyse the image to get the Sudoku grid (look at )
 * ~~Solve the puzzle~~
+
+## Extracting the puzzle from the image
+
+This is by far the hardest part. The two best articles I found on this are: -
+
+* http://aishack.in/tutorials/sudoku-grabber-opencv-detection/
+* http://sudokugrab.blogspot.co.uk/2009/07/how-does-it-all-work.html
+
+### Cleaning up the image.
+
+This involves: -
+
+* Removing colour
+* Thresholding the image to make it binary
+* Eroding the image (effectivly expanding lines) to fill in small gaps
+
+## Solving the puzzle.
+
+This is pretty easy. You can use a backtracking algorithm which
+will effectivly brute force the solution by trying every possible combination
+of numbers until it finds a solution that satisfies the constraints. See the
+followng links for more information: -
+
+* https://see.stanford.edu/materials/icspacs106b/Lecture11.pdf
+* https://en.wikipedia.org/wiki/Sudoku_solving_algorithms
+
 
 ## Environment
 
@@ -35,6 +60,7 @@ You will need: -
 
 * Android Studio
 * Android SDK 25 (Nougat)
+* The Android Emulator
 * OpenCV (see below)
 
 ### Installing OpenCV
