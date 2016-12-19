@@ -35,12 +35,11 @@ This is by far the hardest part. The two best articles I found on this are: -
 * http://aishack.in/tutorials/sudoku-grabber-opencv-detection/
 * http://sudokugrab.blogspot.co.uk/2009/07/how-does-it-all-work.html
 
-### Cleaning up the image.
+### Cleaning up the image
 
 This involves: -
 
-* Removing colour
-* Thresholding the image to make it binary
+* Removing colour & thresholding the image to make it binary
 * Eroding the image (effectivly expanding lines) to fill in small gaps
 
 <img src="./docs/original.png" height="250" width="250" >
@@ -56,6 +55,8 @@ This involves: -
 * Stretching the image stright
 
 <img src="./docs/largestBlob.png" height="250" width="250" >
+<img src="./docs/houghLines.png" height="250" width="250" >
+
 
 ## Solving the puzzle.
 
