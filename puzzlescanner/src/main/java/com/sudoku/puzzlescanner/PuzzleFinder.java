@@ -67,23 +67,16 @@ class PuzzleFinder {
     }
 
     private void generateLargestBlobMat() {
-
-
         largestBlobMat = getThresholdMat().clone();
         int height = largestBlobMat.height();
         int width = largestBlobMat.width();
 
 
-        Point maxBlobOrigin = findLargestBlobOrigin(height, width);
-        markLargestBlob(height, width, maxBlobOrigin);
-        eraseOtherBlobs(height, width);
-    }
-
-    private Point findLargestBlobOrigin(int height, int width) {
         Point maxBlobOrigin = new Point(0, 0);
 
         int maxBlobSize = 0;
         Mat greyMask = new Mat(height + 2, width + 2, CvType.CV_8U, new Scalar(0, 0, 0));
+        Mat blackMask = new Mat(height + 2, width + 2, CvType.CV_8U, new Scalar(0, 0, 0));
         for (int y = 0; y < height; y++) {
             Mat row = largestBlobMat.row(y);
             for (int x = 0; x < width; x++) {
@@ -93,31 +86,18 @@ class PuzzleFinder {
                 if (value[0] > THRESHOLD) {
                     int blobSize = Imgproc.floodFill(largestBlobMat, greyMask, currentPoint, GREY);
                     if (blobSize > maxBlobSize) {
+                        Imgproc.floodFill(largestBlobMat, blackMask, maxBlobOrigin, BLACK);
                         maxBlobOrigin = currentPoint;
                         maxBlobSize = blobSize;
+                    } else {
+                        Imgproc.floodFill(largestBlobMat, blackMask, currentPoint, BLACK);
                     }
                 }
             }
         }
-        return maxBlobOrigin;
-    }
-
-    private void markLargestBlob(int height, int width, Point maxBlobOrigin) {
         Mat largeBlobMask = new Mat(height + 2, width + 2, CvType.CV_8U, BLACK);
         Imgproc.floodFill(largestBlobMat, largeBlobMask, maxBlobOrigin, WHITE);
-    }
 
-    private void eraseOtherBlobs(int height, int width) {
-        Mat eraseMask = new Mat(height + 2, width + 2, CvType.CV_8U, BLACK);
-        for (int y = 0; y < height; y++) {
-            Mat row = largestBlobMat.row(y);
-            for (int x = 0; x < width; x++) {
-                double[] value = row.get(0, x);
-                if (value[0] == GREY_INT) {
-                    Imgproc.floodFill(largestBlobMat, eraseMask, new Point(x, y), BLACK);
-                }
-            }
-        }
     }
 
     Mat findPuzzleLocation(Mat thresholdMat) {
