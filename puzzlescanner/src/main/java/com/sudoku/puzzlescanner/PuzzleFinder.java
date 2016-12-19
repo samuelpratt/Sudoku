@@ -8,12 +8,12 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
+import static java.lang.Math.cos;
 import static java.lang.Math.sin;
-import static java.lang.Math.tan;
 import static org.opencv.imgproc.Imgproc.ADAPTIVE_THRESH_MEAN_C;
 import static org.opencv.imgproc.Imgproc.THRESH_BINARY;
 
-public class PuzzleFinder {
+class PuzzleFinder {
 
     private static final Scalar WHITE = new Scalar(255);
     private static final Scalar BLACK = new Scalar(0);
@@ -28,11 +28,11 @@ public class PuzzleFinder {
     private Mat largestBlobMat;
     private Mat houghLinesMat;
 
-    public PuzzleFinder(Mat mat) {
+    PuzzleFinder(Mat mat) {
         originalMat = mat;
     }
 
-    public Mat getGreyMat() {
+    Mat getGreyMat() {
         if (greyMat == null) {
             generateGreyMat();
         }
@@ -44,7 +44,7 @@ public class PuzzleFinder {
         Imgproc.cvtColor(originalMat, greyMat, Imgproc.COLOR_RGB2GRAY);
     }
 
-    public Mat getThresholdMat() {
+    Mat getThresholdMat() {
         if (thresholdMat == null) {
             generateThresholdMat();
         }
@@ -59,7 +59,7 @@ public class PuzzleFinder {
         Core.bitwise_not(thresholdMat, thresholdMat);
     }
 
-    public Mat getLargestBlob() {
+    Mat getLargestBlob() {
         if (largestBlobMat == null) {
             generateLargestBlobMat();
         }
@@ -120,28 +120,34 @@ public class PuzzleFinder {
         }
     }
 
-    public Mat findPuzzleLocation(Mat thresholdMat) {
+    Mat findPuzzleLocation(Mat thresholdMat) {
         Mat houghLinesMat = thresholdMat.clone();
         Mat linesMat = thresholdMat.clone();
         int width = thresholdMat.width();
         int height = thresholdMat.height();
 
-        Imgproc.HoughLines(thresholdMat, houghLinesMat, (double) 1, Math.PI / 180, 200);
+        Imgproc.HoughLines(thresholdMat, houghLinesMat, (double) 1, Math.PI / 180, 500);
 
+        //The Hough transform returns a series of lines in Polar format this is returned in the
+        //form of a Mat where each row is a vector where row[0] is rho and row[1] is theta
+        //See http://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/hough_lines/hough_lines.html
+        //and http://stackoverflow.com/questions/7925698/android-opencv-drawing-hough-lines/7975315#7975315
         int lines = houghLinesMat.rows();
         for (int x = 0; x < lines; x++) {
             double[] vec = houghLinesMat.get(x, 0);
             Vector vector = new Vector(vec[0], vec[1]);
 
-            if (vector.theta != 0) {
-                float m = (float) (-1 / tan(vector.theta));
-                float c = (float) (vector.rho / sin(vector.theta));
-                Imgproc.line(linesMat, new Point(0, c), new Point(width, m * width + c), GREY);
-            } else {
-                Imgproc.line(linesMat, new Point(vector.rho, 0), new Point(vector.rho, height), GREY);
-            }
 
+            Point origin = new Point();
+            Point destination = new Point();
+            double a = cos(vector.theta), b = sin(vector.theta);
+            double x0 = a * vector.rho, y0 = b * vector.rho;
+            origin.x = (x0 + width * (-b));
+            origin.y = (y0 + height * (a));
+            destination.x = (x0 - width * (-b));
+            destination.y = (y0 - height * (a));
 
+            Imgproc.line(linesMat, origin, destination, GREY);
         }
 
         return linesMat;
