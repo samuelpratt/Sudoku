@@ -11,7 +11,9 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
 
@@ -42,6 +44,7 @@ public class BitmapFixture {
         Bitmap bitmap = BitmapFactory.decodeResource(testRes, resource);
         Mat mat = new Mat(bitmap.getWidth(), bitmap.getHeight(), CvType.CV_8SC1);
         Utils.bitmapToMat(bitmap, mat);
+        Imgproc.resize(mat, mat, new Size(0, 0), .4, .4, Imgproc.INTER_LINEAR);
         return mat;
     }
 }

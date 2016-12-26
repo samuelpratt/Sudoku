@@ -18,7 +18,6 @@ class PuzzleFinder {
     private static final Scalar WHITE = new Scalar(255);
     private static final Scalar BLACK = new Scalar(0);
     private static final Scalar GREY = new Scalar(64);
-    private static final int GREY_INT = 64;
     private static final int THRESHOLD = 128;
 
 
@@ -59,7 +58,7 @@ class PuzzleFinder {
         Core.bitwise_not(thresholdMat, thresholdMat);
     }
 
-    Mat getLargestBlob() {
+    Mat getLargestBlobMat() {
         if (largestBlobMat == null) {
             generateLargestBlobMat();
         }
@@ -100,21 +99,28 @@ class PuzzleFinder {
 
     }
 
-    Mat findPuzzleLocation(Mat thresholdMat) {
-        Mat houghLinesMat = thresholdMat.clone();
-        Mat linesMat = thresholdMat.clone();
+    Mat getHoughLinesMat() {
+        if (houghLinesMat == null)
+            generateHoughLinesMat();
+        return houghLinesMat;
+    }
+
+    void generateHoughLinesMat() {
+        Mat linesMat = getLargestBlobMat().clone();
+        houghLinesMat = getLargestBlobMat().clone();
         int width = thresholdMat.width();
         int height = thresholdMat.height();
 
-        Imgproc.HoughLines(thresholdMat, houghLinesMat, (double) 1, Math.PI / 180, 500);
+        //Need to think about the threshold as getting this correct is very important!
+        Imgproc.HoughLines(thresholdMat, linesMat, (double) 1, Math.PI / 180, 700);
 
         //The Hough transform returns a series of lines in Polar format this is returned in the
         //form of a Mat where each row is a vector where row[0] is rho and row[1] is theta
         //See http://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/hough_lines/hough_lines.html
         //and http://stackoverflow.com/questions/7925698/android-opencv-drawing-hough-lines/7975315#7975315
-        int lines = houghLinesMat.rows();
+        int lines = linesMat.rows();
         for (int x = 0; x < lines; x++) {
-            double[] vec = houghLinesMat.get(x, 0);
+            double[] vec = linesMat.get(x, 0);
             Vector vector = new Vector(vec[0], vec[1]);
 
 
@@ -127,10 +133,7 @@ class PuzzleFinder {
             destination.x = (x0 - width * (-b));
             destination.y = (y0 - height * (a));
 
-            Imgproc.line(linesMat, origin, destination, GREY);
+            Imgproc.line(houghLinesMat, origin, destination, GREY);
         }
-
-        return linesMat;
-
     }
 }
