@@ -8,6 +8,9 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static org.opencv.imgproc.Imgproc.ADAPTIVE_THRESH_MEAN_C;
@@ -105,9 +108,18 @@ class PuzzleFinder {
         return houghLinesMat;
     }
 
-    void generateHoughLinesMat() {
-        Mat linesMat = getLargestBlobMat().clone();
+    private void generateHoughLinesMat() {
+
         houghLinesMat = getLargestBlobMat().clone();
+
+        List<Line> houghLines = getHoughLines();
+        for (Line line : houghLines) {
+            Imgproc.line(houghLinesMat, line.origin, line.destination, GREY);
+        }
+    }
+
+    private List<Line> getHoughLines() {
+        Mat linesMat = getLargestBlobMat().clone();
         int width = thresholdMat.width();
         int height = thresholdMat.height();
 
@@ -118,6 +130,7 @@ class PuzzleFinder {
         //form of a Mat where each row is a vector where row[0] is rho and row[1] is theta
         //See http://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/hough_lines/hough_lines.html
         //and http://stackoverflow.com/questions/7925698/android-opencv-drawing-hough-lines/7975315#7975315
+        List<Line> houghLines = new ArrayList<>();
         int lines = linesMat.rows();
         for (int x = 0; x < lines; x++) {
             double[] vec = linesMat.get(x, 0);
@@ -133,7 +146,60 @@ class PuzzleFinder {
             destination.x = (x0 - width * (-b));
             destination.y = (y0 - height * (a));
 
-            Imgproc.line(houghLinesMat, origin, destination, GREY);
+            houghLines.add(new Line(origin, destination));
         }
+        return houghLines;
     }
+
+    // See http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
+    Point findIntersection(Line line1, Line line2) {
+
+        double line1DeltaX = line1.destination.x - line1.origin.x;
+        double line1DeltaY = line1.destination.y - line1.origin.y;
+        double line2DeltaX = line2.destination.x - line2.origin.x;
+        double line2DeltaY = line2.destination.y - line2.origin.y;
+
+        double linesDeltaOriginX = line1.origin.x - line2.origin.x;
+        double linesDeltaOriginY = line2.origin.y - line2.origin.y;
+
+        double denominator = line1DeltaX * line2DeltaY - line2DeltaX * line1DeltaY;
+        double numeratorS = line1DeltaX * linesDeltaOriginY - line1DeltaY * linesDeltaOriginX;
+        double numeratorT = line2DeltaX * linesDeltaOriginY - line2DeltaY * linesDeltaOriginX;
+
+        double t = numeratorT / denominator;
+
+        boolean denominatorPositive = denominator > 0;
+
+        boolean intersectionDetected = isIntersectionDetected(denominator, numeratorS, numeratorT, denominatorPositive);
+        if (intersectionDetected == false)
+            return null;
+
+        return calculateIntersection(line1, line1DeltaX, line1DeltaY, t);
+    }
+
+    private boolean isIntersectionDetected(double denominator, double numeratorS, double numeratorT, boolean denominatorPositive) {
+        boolean intersectionDetected = true;
+
+        if (denominator == 0)
+            intersectionDetected = false; // Collinear
+
+        if ((numeratorS < 0) == denominatorPositive)
+            intersectionDetected = false; // No collision
+
+
+        if ((numeratorT < 0) == denominatorPositive)
+            intersectionDetected = false; // No collision
+
+        if (((numeratorS > denominator) == denominatorPositive) || ((numeratorT > denominator) == denominatorPositive))
+            intersectionDetected = false; // No collision
+        return intersectionDetected;
+    }
+
+    private Point calculateIntersection(Line line1, double line1DeltaX, double line1DeltaY, double t) {
+        Point intersection = new Point();
+        intersection.x = line1.origin.x + (t * line1DeltaX);
+        intersection.y = line1.origin.y + (t * line1DeltaY);
+        return intersection;
+    }
+
 }

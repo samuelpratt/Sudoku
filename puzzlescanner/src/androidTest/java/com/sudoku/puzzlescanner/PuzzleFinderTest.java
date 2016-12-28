@@ -2,9 +2,11 @@ package com.sudoku.puzzlescanner;
 
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 
 @RunWith(AndroidJUnit4.class)
 public class PuzzleFinderTest {
@@ -45,6 +47,44 @@ public class PuzzleFinderTest {
         Mat linesMat = sut.getHoughLinesMat();
         BitmapFixture.writePngForMat(linesMat, new Object() {
         }.getClass().getEnclosingMethod().getName());
+    }
+
+    @Test
+    public void linesAreParallel_findIntersection_returnsNull() {
+        Line line1 = new Line(new Point(0, 0), new Point(10, 0));
+        Line line2 = new Line(new Point(0, 10), new Point(10, 10));
+
+        Point intersection = calcIntersection(line1, line2);
+
+        Assert.assertNull(intersection);
+    }
+
+    @Test
+    public void linesAreCollinear_findIntersection_returnsNull() {
+        Line line1 = new Line(new Point(0, 0), new Point(10, 0));
+        Line line2 = new Line(new Point(0, 0), new Point(20, 0));
+
+        Point intersection = calcIntersection(line1, line2);
+
+        Assert.assertNull(intersection);
+    }
+
+    @Test
+    public void linesIntersect_findIntersection_returnsNull() {
+        Line line1 = new Line(new Point(0, 5), new Point(10, 5));
+        Line line2 = new Line(new Point(5, 0), new Point(5, 10));
+
+        Point intersection = calcIntersection(line1, line2);
+
+        Assert.assertEquals(new Point(5, 5), intersection);
+    }
+
+    private Point calcIntersection(Line line1, Line line2) {
+        Mat mat = BitmapFixture.readBitMapFromResouce(R.drawable.sudoku);
+
+        PuzzleFinder sut = new PuzzleFinder(mat);
+
+        return sut.findIntersection(line1, line2);
     }
 
 }
