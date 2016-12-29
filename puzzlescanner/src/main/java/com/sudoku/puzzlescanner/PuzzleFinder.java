@@ -177,8 +177,8 @@ class PuzzleFinder {
         boolean denominatorPositive = denominator > 0;
 
         boolean intersectionDetected = isIntersectionDetected(denominator, numeratorS, numeratorT, denominatorPositive);
-        //if (!intersectionDetected)
-        //   return null;
+        if (!intersectionDetected)
+            return null;
 
         return calculateIntersection(line1, line1DeltaX, line1DeltaY, t);
     }
