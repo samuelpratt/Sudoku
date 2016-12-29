@@ -25,7 +25,8 @@ The idea is to use: -
 * ~~Work out how to create a basic Android App~~
 * ~~Take a picture and show a preview~~
 * Get the image from the SD Card (look at https://developer.android.com/training/camera/photobasics.html#TaskPath)
-* Analyse the image to get the Sudoku grid (See below)
+* ~~Analyse the image to find the Sudoku grid (See below)~~
+* Extract the Puzzle and read the numbers from the Sudoku grid
 * ~~Solve the puzzle~~
 
 ## Extracting the puzzle from the image
@@ -39,24 +40,34 @@ This is by far the hardest part. The two best articles I found on this are: -
 
 This involves: -
 
-* Removing colour & thresholding the image to make it binary
+* Removing colour
+* Thresholding the image to make it binary using an adaptive threshold to deal with shadows and variations in light
 * Eroding the image (effectivly expanding lines) to fill in small gaps
 
 <img src="./docs/original.png" height="250" width="250" >
 <img src="./docs/threshold.png" height="250" width="250" >
 
-### Extracting the Grid
+### Finding the Grid
 
 This involves: -
 
-* Isolating the grid from the rest of the image
-* Finding edges
-* Calculating the corners of the images
-* Stretching the image stright
+* Isolating the grid from the rest of the image (I used a simple floodfill agorthm based on the ImageShack article to find the largest connected area in the image)
+* Finding edges using a Hough Transform (http://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/hough_lines/hough_lines.html)
+* Calculating the corners of the images by : -
+  * Finding outer edges (i.e. those nearest to the borders of the image)
+  * Calcuating their intersections to find the corners (see http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect)
 
 <img src="./docs/largestBlob.png" height="250" width="250" >
 <img src="./docs/houghLines.png" height="250" width="250" >
 <img src="./docs/outline.png" height="250" width="250" >
+
+### Extracting the Puzzle
+
+This involves : -
+
+* A bit more image clean up i.e. removing the grid that we found so that if some of it gets into the extracted image it
+doesn't confuse the OCR algorthm.
+* Stretching the image straight (http://docs.opencv.org/3.1.0/da/d6e/tutorial_py_geometric_transformations.html)
 
 
 ## Solving the puzzle.
