@@ -69,6 +69,7 @@ This involves : -
 doesn't confuse the OCR algorthm.
 * Stretching the image straight (http://docs.opencv.org/3.1.0/da/d6e/tutorial_py_geometric_transformations.html)
 
+<img src="./docs/extracted.png" height="250" width="250" >
 
 ## Solving the puzzle.
 
