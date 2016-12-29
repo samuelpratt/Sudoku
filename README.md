@@ -25,7 +25,8 @@ The idea is to use: -
 * ~~Work out how to create a basic Android App~~
 * ~~Take a picture and show a preview~~
 * Get the image from the SD Card (look at https://developer.android.com/training/camera/photobasics.html#TaskPath)
-* Analyse the image to get the Sudoku grid (See below)
+* ~~Analyse the image to find the Sudoku grid (See below)~~
+* Extract the Puzzle and read the numbers from the Sudoku grid
 * ~~Solve the puzzle~~
 
 ## Extracting the puzzle from the image
@@ -45,18 +46,25 @@ This involves: -
 <img src="./docs/original.png" height="250" width="250" >
 <img src="./docs/threshold.png" height="250" width="250" >
 
-### Extracting the Grid
+### Finding the Grid
 
 This involves: -
 
 * Isolating the grid from the rest of the image
 * Finding edges
 * Calculating the corners of the images
-* Stretching the image stright
 
 <img src="./docs/largestBlob.png" height="250" width="250" >
 <img src="./docs/houghLines.png" height="250" width="250" >
 <img src="./docs/outline.png" height="250" width="250" >
+
+### Extracting the Puzzle
+
+This involves : -
+
+* A bit more image clean up i.e. removing the grid that we found so that if some of it gets into the extracted image it
+doesn't confuse the OCR algorthm.
+* Stretching the image straight http://docs.opencv.org/3.1.0/da/d6e/tutorial_py_geometric_transformations.html
 
 
 ## Solving the puzzle.
