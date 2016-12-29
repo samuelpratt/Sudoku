@@ -109,6 +109,7 @@ public class PuzzleFinderTest {
         Assert.assertEquals(new Point(5, 5), intersection);
     }
 
+
     private Point calcIntersection(Line line1, Line line2) {
         Mat mat = BitmapFixture.readBitMapFromResouce(R.drawable.sudoku);
 

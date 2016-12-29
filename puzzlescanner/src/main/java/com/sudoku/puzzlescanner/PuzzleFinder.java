@@ -127,7 +127,7 @@ class PuzzleFinder {
         int height = thresholdMat.height();
 
         //Need to think about the threshold as getting this correct is very important!
-        Imgproc.HoughLines(thresholdMat, linesMat, (double) 1, Math.PI / 180, 700);
+        Imgproc.HoughLines(thresholdMat, linesMat, (double) 1, Math.PI / 180, 600);
 
         //The Hough transform returns a series of lines in Polar format this is returned in the
         //form of a Mat where each row is a vector where row[0] is rho and row[1] is theta
@@ -166,7 +166,7 @@ class PuzzleFinder {
         double line2DeltaY = line2.destination.y - line2.origin.y;
 
         double linesDeltaOriginX = line1.origin.x - line2.origin.x;
-        double linesDeltaOriginY = line2.origin.y - line2.origin.y;
+        double linesDeltaOriginY = line1.origin.y - line2.origin.y;
 
         double denominator = line1DeltaX * line2DeltaY - line2DeltaX * line1DeltaY;
         double numeratorS = line1DeltaX * linesDeltaOriginY - line1DeltaY * linesDeltaOriginX;
@@ -177,8 +177,8 @@ class PuzzleFinder {
         boolean denominatorPositive = denominator > 0;
 
         boolean intersectionDetected = isIntersectionDetected(denominator, numeratorS, numeratorT, denominatorPositive);
-        if (!intersectionDetected)
-            return null;
+        //if (!intersectionDetected)
+        //   return null;
 
         return calculateIntersection(line1, line1DeltaX, line1DeltaY, t);
     }
@@ -218,9 +218,6 @@ class PuzzleFinder {
         List<Line> houghLines = getHoughLines();
 
         for (Line line : houghLines) {
-            if (line.getOrientation() == Orientation.fourtyFiveDegree) {
-                continue;
-            }
             if (line.getOrientation() == Orientation.horizontal) {
                 countHorizontalLines++;
                 if (location.top == null) {
@@ -232,17 +229,19 @@ class PuzzleFinder {
                     location.bottom = line;
                 if (line.getMaxY() > location.top.getMaxY())
                     location.top = line;
-            } else {
+            } else if (line.getOrientation() == Orientation.vertical) {
                 countVerticalLines++;
                 if (location.left == null) {
                     location.left = line;
                     location.right = line;
                     continue;
                 }
-                if (line.getMinY() < location.left.getMinY())
+                if (line.getMinX() < location.left.getMinX())
                     location.left = line;
-                if (line.getMaxY() > location.right.getMaxY())
+                if (line.getMaxX() > location.right.getMaxX())
                     location.right = line;
+            } else {
+                continue;
             }
         }
 
@@ -258,13 +257,13 @@ class PuzzleFinder {
         if (location.topLeft == null)
             throw new PuzzleNotFoundException("Cannot find top left corner");
 
-        //location.topRight = findIntersection(topLine, rightLine);
-        //if(location.topRight == null)
-        //throw new PuzzleNotFoundException("Cannot find top right corner");
+        location.topRight = findIntersection(location.top, location.right);
+        if (location.topRight == null)
+            throw new PuzzleNotFoundException("Cannot find top right corner");
 
-        //location.bottomLeft = findIntersection(bottomLine, leftLine);
-        //if(location.topLeft == null)
-        //throw new PuzzleNotFoundException("Cannot find bottom left corner");
+        location.bottomLeft = findIntersection(location.bottom, location.left);
+        if (location.topLeft == null)
+            throw new PuzzleNotFoundException("Cannot find bottom left corner");
 
         location.bottomRight = findIntersection(location.bottom, location.right);
         if (location.topLeft == null)
@@ -285,9 +284,9 @@ class PuzzleFinder {
 
         PuzzleOutLine location = findOutLine();
 
-        Imgproc.drawMarker(outLineMat, location.topLeft, GREY, MARKER_TILTED_CROSS, 10, 2, 8);
-        //Imgproc.drawMarker(outLineMat, location.topRight, GREY,  MARKER_TILTED_CROSS, 10, 2, 8);
-        //Imgproc.drawMarker(outLineMat, location.bottomLeft, GREY,  MARKER_TILTED_CROSS, 10, 2, 8);
+        Imgproc.drawMarker(outLineMat, location.topLeft, GREY, MARKER_TILTED_CROSS, 10, 5, 8);
+        Imgproc.drawMarker(outLineMat, location.topRight, GREY, MARKER_TILTED_CROSS, 10, 5, 8);
+        Imgproc.drawMarker(outLineMat, location.bottomLeft, GREY, MARKER_TILTED_CROSS, 10, 5, 8);
         Imgproc.drawMarker(outLineMat, location.bottomRight, GREY, MARKER_TILTED_CROSS, 10, 2, 8);
 
         Imgproc.line(outLineMat, location.top.origin, location.top.destination, GREY);
