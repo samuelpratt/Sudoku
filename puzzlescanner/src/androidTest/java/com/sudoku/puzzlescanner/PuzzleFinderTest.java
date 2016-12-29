@@ -50,6 +50,16 @@ public class PuzzleFinderTest {
     }
 
     @Test
+    public void validImage_getOutlineMat_CornersInCorrectPlace() throws PuzzleNotFoundException {
+        Mat mat = BitmapFixture.readBitMapFromResouce(R.drawable.sudoku);
+
+        PuzzleFinder sut = new PuzzleFinder(mat);
+        Mat outlineMat = sut.getOutLineMat();
+        BitmapFixture.writePngForMat(outlineMat, new Object() {
+        }.getClass().getEnclosingMethod().getName());
+    }
+
+    @Test
     public void linesAreParallel_findIntersection_returnsNull() {
         Line line1 = new Line(new Point(0, 0), new Point(10, 0));
         Line line2 = new Line(new Point(0, 10), new Point(10, 10));
@@ -70,9 +80,29 @@ public class PuzzleFinderTest {
     }
 
     @Test
-    public void linesIntersect_findIntersection_returnsNull() {
+    public void linesIntersect_findIntersection_returnsIntersection() {
         Line line1 = new Line(new Point(0, 5), new Point(10, 5));
         Line line2 = new Line(new Point(5, 0), new Point(5, 10));
+
+        Point intersection = calcIntersection(line1, line2);
+
+        Assert.assertEquals(new Point(5, 5), intersection);
+    }
+
+    @Test
+    public void negativeOriginlinesIntersect_findIntersection_returnsIntersection() {
+        Line line1 = new Line(new Point(-10, 5), new Point(10, 5));
+        Line line2 = new Line(new Point(5, -10), new Point(5, 10));
+
+        Point intersection = calcIntersection(line1, line2);
+
+        Assert.assertEquals(new Point(5, 5), intersection);
+    }
+
+    @Test
+    public void backwardslinesIntersect_findIntersection_returnsIntersection() {
+        Line line1 = new Line(new Point(10, 5), new Point(-10, 5));
+        Line line2 = new Line(new Point(5, 10), new Point(5, -10));
 
         Point intersection = calcIntersection(line1, line2);
 

@@ -14,6 +14,7 @@ import java.util.List;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static org.opencv.imgproc.Imgproc.ADAPTIVE_THRESH_MEAN_C;
+import static org.opencv.imgproc.Imgproc.MARKER_TILTED_CROSS;
 import static org.opencv.imgproc.Imgproc.THRESH_BINARY;
 
 class PuzzleFinder {
@@ -21,6 +22,7 @@ class PuzzleFinder {
     private static final Scalar WHITE = new Scalar(255);
     private static final Scalar BLACK = new Scalar(0);
     private static final Scalar GREY = new Scalar(64);
+    private static final Scalar DARK_GREY = new Scalar(127);
     private static final int THRESHOLD = 128;
 
 
@@ -29,6 +31,7 @@ class PuzzleFinder {
     private Mat thresholdMat;
     private Mat largestBlobMat;
     private Mat houghLinesMat;
+    private Mat outLineMat;
 
     PuzzleFinder(Mat mat) {
         originalMat = mat;
@@ -146,14 +149,17 @@ class PuzzleFinder {
             destination.x = (x0 - width * (-b));
             destination.y = (y0 - height * (a));
 
-            houghLines.add(new Line(origin, destination));
+            Line line = new Line(origin, destination);
+
+
+            houghLines.add(line);
         }
         return houghLines;
     }
 
-    // See http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
-    Point findIntersection(Line line1, Line line2) {
 
+    Point findIntersection(Line line1, Line line2) {
+        //See http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
         double line1DeltaX = line1.destination.x - line1.origin.x;
         double line1DeltaY = line1.destination.y - line1.origin.y;
         double line2DeltaX = line2.destination.x - line2.origin.x;
@@ -171,7 +177,7 @@ class PuzzleFinder {
         boolean denominatorPositive = denominator > 0;
 
         boolean intersectionDetected = isIntersectionDetected(denominator, numeratorS, numeratorT, denominatorPositive);
-        if (intersectionDetected == false)
+        if (!intersectionDetected)
             return null;
 
         return calculateIntersection(line1, line1DeltaX, line1DeltaY, t);
@@ -202,4 +208,93 @@ class PuzzleFinder {
         return intersection;
     }
 
+    PuzzleOutLine findOutLine() throws PuzzleNotFoundException {
+
+        PuzzleOutLine location = new PuzzleOutLine();
+
+        int countHorizontalLines = 0;
+        int countVerticalLines = 0;
+
+        List<Line> houghLines = getHoughLines();
+
+        for (Line line : houghLines) {
+            if (line.getOrientation() == Orientation.fourtyFiveDegree) {
+                continue;
+            }
+            if (line.getOrientation() == Orientation.horizontal) {
+                countHorizontalLines++;
+                if (location.top == null) {
+                    location.top = line;
+                    location.bottom = line;
+                    continue;
+                }
+                if (line.getMinY() < location.bottom.getMinY())
+                    location.bottom = line;
+                if (line.getMaxY() > location.top.getMaxY())
+                    location.top = line;
+            } else {
+                countVerticalLines++;
+                if (location.left == null) {
+                    location.left = line;
+                    location.right = line;
+                    continue;
+                }
+                if (line.getMinY() < location.left.getMinY())
+                    location.left = line;
+                if (line.getMaxY() > location.right.getMaxY())
+                    location.right = line;
+            }
+        }
+
+        if (houghLines.size() < 4)
+            throw new PuzzleNotFoundException("not enough possible edges found. Need at least 4 for a rectangle.");
+        if (countHorizontalLines < 2)
+            throw new PuzzleNotFoundException("not enough horizontal edges found. Need at least 2 for a rectangle.");
+        if (countVerticalLines < 2)
+            throw new PuzzleNotFoundException("not enough vertical edges found. Need at least 2 for a rectangle.");
+
+
+        location.topLeft = findIntersection(location.top, location.left);
+        if (location.topLeft == null)
+            throw new PuzzleNotFoundException("Cannot find top left corner");
+
+        //location.topRight = findIntersection(topLine, rightLine);
+        //if(location.topRight == null)
+        //throw new PuzzleNotFoundException("Cannot find top right corner");
+
+        //location.bottomLeft = findIntersection(bottomLine, leftLine);
+        //if(location.topLeft == null)
+        //throw new PuzzleNotFoundException("Cannot find bottom left corner");
+
+        location.bottomRight = findIntersection(location.bottom, location.right);
+        if (location.topLeft == null)
+            throw new PuzzleNotFoundException("Cannot find bottom right corner");
+
+        return location;
+    }
+
+    Mat getOutLineMat() throws PuzzleNotFoundException {
+        if (outLineMat == null)
+
+            generateOutlineMat();
+        return outLineMat;
+    }
+
+    void generateOutlineMat() throws PuzzleNotFoundException {
+        outLineMat = getThresholdMat().clone();
+
+        PuzzleOutLine location = findOutLine();
+
+        Imgproc.drawMarker(outLineMat, location.topLeft, GREY, MARKER_TILTED_CROSS, 10, 2, 8);
+        //Imgproc.drawMarker(outLineMat, location.topRight, GREY,  MARKER_TILTED_CROSS, 10, 2, 8);
+        //Imgproc.drawMarker(outLineMat, location.bottomLeft, GREY,  MARKER_TILTED_CROSS, 10, 2, 8);
+        Imgproc.drawMarker(outLineMat, location.bottomRight, GREY, MARKER_TILTED_CROSS, 10, 2, 8);
+
+        Imgproc.line(outLineMat, location.top.origin, location.top.destination, GREY);
+        Imgproc.line(outLineMat, location.bottom.origin, location.bottom.destination, DARK_GREY);
+        Imgproc.line(outLineMat, location.left.origin, location.left.destination, GREY);
+        Imgproc.line(outLineMat, location.right.origin, location.right.destination, DARK_GREY);
+    }
+
 }
+
