@@ -56,6 +56,7 @@ This involves: -
 
 <img src="./docs/largestBlob.png" height="250" width="250" >
 <img src="./docs/houghLines.png" height="250" width="250" >
+<img src="./docs/outline.png" height="250" width="250" >
 
 
 ## Solving the puzzle.

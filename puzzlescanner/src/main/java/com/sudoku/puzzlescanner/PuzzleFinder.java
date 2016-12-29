@@ -268,14 +268,14 @@ class PuzzleFinder {
     }
 
     void generateOutlineMat() throws PuzzleNotFoundException {
-        outLineMat = getThresholdMat().clone();
+        outLineMat = getGreyMat().clone();
 
         PuzzleOutLine location = findOutLine();
 
-        Imgproc.drawMarker(outLineMat, location.topLeft, GREY, MARKER_TILTED_CROSS, 10, 5, 8);
-        Imgproc.drawMarker(outLineMat, location.topRight, GREY, MARKER_TILTED_CROSS, 10, 5, 8);
-        Imgproc.drawMarker(outLineMat, location.bottomLeft, GREY, MARKER_TILTED_CROSS, 10, 5, 8);
-        Imgproc.drawMarker(outLineMat, location.bottomRight, GREY, MARKER_TILTED_CROSS, 10, 2, 8);
+        Imgproc.drawMarker(outLineMat, location.topLeft, GREY, MARKER_TILTED_CROSS, 30, 10, 8);
+        Imgproc.drawMarker(outLineMat, location.topRight, GREY, MARKER_TILTED_CROSS, 30, 10, 8);
+        Imgproc.drawMarker(outLineMat, location.bottomLeft, GREY, MARKER_TILTED_CROSS, 30, 10, 8);
+        Imgproc.drawMarker(outLineMat, location.bottomRight, GREY, MARKER_TILTED_CROSS, 30, 10, 8);
 
         Imgproc.line(outLineMat, location.top.origin, location.top.destination, GREY);
         Imgproc.line(outLineMat, location.bottom.origin, location.bottom.destination, DARK_GREY);
