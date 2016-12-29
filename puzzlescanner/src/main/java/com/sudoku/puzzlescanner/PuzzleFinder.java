@@ -176,29 +176,7 @@ class PuzzleFinder {
 
         boolean denominatorPositive = denominator > 0;
 
-        boolean intersectionDetected = isIntersectionDetected(denominator, numeratorS, numeratorT, denominatorPositive);
-        if (!intersectionDetected)
-            return null;
-
         return calculateIntersection(line1, line1DeltaX, line1DeltaY, t);
-    }
-
-    private boolean isIntersectionDetected(double denominator, double numeratorS, double numeratorT, boolean denominatorPositive) {
-        boolean intersectionDetected = true;
-
-        if (denominator == 0)
-            intersectionDetected = false; // Collinear
-
-        if ((numeratorS < 0) == denominatorPositive)
-            intersectionDetected = false; // No collision
-
-
-        if ((numeratorT < 0) == denominatorPositive)
-            intersectionDetected = false; // No collision
-
-        if (((numeratorS > denominator) == denominatorPositive) || ((numeratorT > denominator) == denominatorPositive))
-            intersectionDetected = false; // No collision
-        return intersectionDetected;
     }
 
     private Point calculateIntersection(Line line1, double line1DeltaX, double line1DeltaY, double t) {
@@ -210,6 +188,9 @@ class PuzzleFinder {
 
     PuzzleOutLine findOutLine() throws PuzzleNotFoundException {
 
+        int width = getHoughLinesMat().width();
+        int height = getHoughLinesMat().height();
+
         PuzzleOutLine location = new PuzzleOutLine();
 
         int countHorizontalLines = 0;
@@ -220,6 +201,7 @@ class PuzzleFinder {
         for (Line line : houghLines) {
             if (line.getOrientation() == Orientation.horizontal) {
                 countHorizontalLines++;
+
                 if (location.top == null) {
                     location.top = line;
                     location.bottom = line;
@@ -231,6 +213,12 @@ class PuzzleFinder {
                     location.top = line;
             } else if (line.getOrientation() == Orientation.vertical) {
                 countVerticalLines++;
+
+//                if(line.origin.y > 0)
+//                    line.origin.y = 0;
+//                if(line.destination.y < height)
+//                    line.destination.y = height;
+
                 if (location.left == null) {
                     location.left = line;
                     location.right = line;
