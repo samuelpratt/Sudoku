@@ -65,9 +65,11 @@ This involves: -
 
 This involves : -
 
-* A bit more image clean up i.e. removing the grid that we found so that if some of it gets into the extracted image it
-doesn't confuse the OCR algorthm.
-* Stretching the image straight (http://docs.opencv.org/3.1.0/da/d6e/tutorial_py_geometric_transformations.html)
+* A bit more image clean up (I.e. removing the grid that we found so that if some of it gets into the extracted image it
+doesn't confuse the OCR algorthm).
+* Stretching the image straight
+ * http://docs.opencv.org/3.1.0/da/d6e/tutorial_py_geometric_transformations.html
+ * http://stackoverflow.com/questions/17361693/cant-get-opencvs-warpperspective-to-work-on-android
 
 <img src="./docs/extracted.png" height="250" width="250" >
 
