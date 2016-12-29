@@ -5,10 +5,10 @@ import org.opencv.core.Point;
 enum Orientation {
     horizontal,
     vertical,
-    fourtyFiveDegree,
+    fortyFiveDegree,
 }
 
-public class Line {
+class Line {
     Point origin;
     Point destination;
 
@@ -19,7 +19,7 @@ public class Line {
 
     Orientation getOrientation() {
         if (getHeight() == getwidth())
-            return Orientation.fourtyFiveDegree;
+            return Orientation.fortyFiveDegree;
         if (getHeight() > getwidth())
             return Orientation.vertical;
         return Orientation.horizontal;

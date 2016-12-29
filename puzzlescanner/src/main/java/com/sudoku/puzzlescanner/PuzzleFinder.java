@@ -58,7 +58,7 @@ class PuzzleFinder {
     private void generateThresholdMat() {
         thresholdMat = getGreyMat().clone();
         Imgproc.adaptiveThreshold(thresholdMat, thresholdMat, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 7, 5);
-        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_ERODE, new Size(5, 5));
+        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_ERODE, new Size(2, 2));
         Imgproc.erode(thresholdMat, thresholdMat, kernel);
         Core.bitwise_not(thresholdMat, thresholdMat);
     }
@@ -126,7 +126,7 @@ class PuzzleFinder {
         int height = thresholdMat.height();
 
         //Need to think about the threshold as getting this correct is very important!
-        Imgproc.HoughLines(thresholdMat, linesMat, (double) 1, Math.PI / 180, 600);
+        Imgproc.HoughLines(thresholdMat, linesMat, (double) 1, Math.PI / 180, 400);
 
         //The Hough transform returns a series of lines in Polar format this is returned in the
         //form of a Mat where each row is a vector where row[0] is rho and row[1] is theta
