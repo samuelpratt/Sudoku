@@ -11,6 +11,9 @@ import org.opencv.imgproc.Imgproc;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.sudoku.puzzlescanner.Constants.BLACK;
+import static com.sudoku.puzzlescanner.Constants.GREY;
+import static com.sudoku.puzzlescanner.Constants.WHITE;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static org.opencv.imgproc.Imgproc.ADAPTIVE_THRESH_MEAN_C;
@@ -19,11 +22,7 @@ import static org.opencv.imgproc.Imgproc.THRESH_BINARY;
 
 class PuzzleFinder {
 
-    private static final Scalar WHITE = new Scalar(255);
-    private static final Scalar BLACK = new Scalar(0);
-    private static final Scalar GREY = new Scalar(64);
-    private static final Scalar DARK_GREY = new Scalar(127);
-    private static final int THRESHOLD = 128;
+
 
 
     private Mat originalMat;
@@ -88,7 +87,7 @@ class PuzzleFinder {
                 double[] value = row.get(0, x);
                 Point currentPoint = new Point(x, y);
 
-                if (value[0] > THRESHOLD) {
+                if (value[0] > Constants.THRESHOLD) {
                     int blobSize = Imgproc.floodFill(largestBlobMat, greyMask, currentPoint, GREY);
                     if (blobSize > maxBlobSize) {
                         Imgproc.floodFill(largestBlobMat, blackMask, maxBlobOrigin, BLACK);
@@ -169,14 +168,20 @@ class PuzzleFinder {
         double linesDeltaOriginY = line1.origin.y - line2.origin.y;
 
         double denominator = line1DeltaX * line2DeltaY - line2DeltaX * line1DeltaY;
-        double numeratorS = line1DeltaX * linesDeltaOriginY - line1DeltaY * linesDeltaOriginX;
         double numeratorT = line2DeltaX * linesDeltaOriginY - line2DeltaY * linesDeltaOriginX;
 
         double t = numeratorT / denominator;
 
-        boolean denominatorPositive = denominator > 0;
+
+        if (linesAreColinear(denominator))
+            return null;
+
 
         return calculateIntersection(line1, line1DeltaX, line1DeltaY, t);
+    }
+
+    private boolean linesAreColinear(double denominator) {
+        return denominator == 0;
     }
 
     private Point calculateIntersection(Line line1, double line1DeltaX, double line1DeltaY, double t) {
@@ -187,9 +192,6 @@ class PuzzleFinder {
     }
 
     PuzzleOutLine findOutLine() throws PuzzleNotFoundException {
-
-        int width = getHoughLinesMat().width();
-        int height = getHoughLinesMat().height();
 
         PuzzleOutLine location = new PuzzleOutLine();
 
@@ -214,11 +216,6 @@ class PuzzleFinder {
             } else if (line.getOrientation() == Orientation.vertical) {
                 countVerticalLines++;
 
-//                if(line.origin.y > 0)
-//                    line.origin.y = 0;
-//                if(line.destination.y < height)
-//                    line.destination.y = height;
-
                 if (location.left == null) {
                     location.left = line;
                     location.right = line;
@@ -228,8 +225,6 @@ class PuzzleFinder {
                     location.left = line;
                 if (line.getMaxX() > location.right.getMaxX())
                     location.right = line;
-            } else {
-                continue;
             }
         }
 
@@ -260,6 +255,7 @@ class PuzzleFinder {
         return location;
     }
 
+
     Mat getOutLineMat() throws PuzzleNotFoundException {
         if (outLineMat == null)
 
@@ -278,9 +274,9 @@ class PuzzleFinder {
         Imgproc.drawMarker(outLineMat, location.bottomRight, GREY, MARKER_TILTED_CROSS, 30, 10, 8);
 
         Imgproc.line(outLineMat, location.top.origin, location.top.destination, GREY);
-        Imgproc.line(outLineMat, location.bottom.origin, location.bottom.destination, DARK_GREY);
+        Imgproc.line(outLineMat, location.bottom.origin, location.bottom.destination, Constants.DARK_GREY);
         Imgproc.line(outLineMat, location.left.origin, location.left.destination, GREY);
-        Imgproc.line(outLineMat, location.right.origin, location.right.destination, DARK_GREY);
+        Imgproc.line(outLineMat, location.right.origin, location.right.destination, Constants.DARK_GREY);
     }
 
 }
