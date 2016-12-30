@@ -73,6 +73,23 @@ doesn't confuse the OCR algorthm).
 
 <img src="./docs/extracted.png" height="250" width="250" >
 
+### Getting the digits
+
+To do this you need to chop the puzzle up into 9x9 chunks. As th digits probably
+aren't exactly in the right place I've added a border around each area.
+
+The first row is shown below: -
+
+1 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=0.png" height="25" width="25">
+2 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=1.png" height="25" width="25" >
+3 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=2.png" height="25" width="25" >
+4 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=3.png" height="25" width="25" >
+5 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=4.png" height="25" width="25" >
+6 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=5.png" height="25" width="25" >
+7 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=6.png" height="25" width="25" >
+8 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=7.png" height="25" width="25" >
+9 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=8.png" height="25" width="25" >
+
 ## Solving the puzzle.
 
 This is pretty easy. You can use a backtracking algorithm which
