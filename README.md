@@ -135,11 +135,8 @@ as the unit tests don't use OpenCV manager. To do this: -
  
 This is required for Tess-Two. See https://developer.android.com/ndk/guides/index.html#download-ndk
  
-### Installing Tess-Two
+### Tess-Two
  
-Tess-Two is a Android fork of Tesseract OCR.
- 
-TODO: Get this working
- 
-* https://stackoverflow.com/questions/41154462/building-tess-two-into-a-project-using-android-studios-gradle-build
-* https://github.com/rmtheis/tess-two
+You don't need to do anything to build the project.
+
+However if you want to use this there's a bit of work in getting everything set up correctly. I followed the tutorial here http://imperialsoup.com/2016/04/29/simple-ocr-android-app-using-tesseract-tutorial/
