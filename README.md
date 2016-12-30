@@ -82,29 +82,29 @@ aren't exactly in the right place I've added a border around each area.
 
 The first row is shown below: -
 
-1 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=0.png" height="25" width="25" >
-2 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=1.png" height="25" width="25" >
-3 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=2.png" height="25" width="25" >
-4 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=3.png" height="25" width="25" >
-5 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=4.png" height="25" width="25" >
-6 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=5.png" height="25" width="25" >
-7 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=6.png" height="25" width="25" >
-8 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=7.png" height="25" width="25" >
-9 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=8.png" height="25" width="25" >
+1 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=0.png" height="50" width="50" >
+2 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=1.png" height="50" width="50" >
+3 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=2.png" height="50" width="50" >
+4 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=3.png" height="50" width="50" >
+5 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=4.png" height="50" width="50" >
+6 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=5.png" height="50" width="50" >
+7 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=6.png" height="50" width="50" >
+8 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=7.png" height="50" width="50" >
+9 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=8.png" height="50" width="50" >
 
 However, as you can see, the digits are pretty messy and there are alot of holes and aftefacts that the thresholding didn't remove. These tend to cause issues with the OCR as it thinks some of the larger ones are numbers.
 
 We can help by eroding and then dialating the image with a fairly large kernal. This fills gaps in the digits and then blurs any artifacts. We then bit flip the image back to black on white.
 
-1 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=0.png" height="25" width="25" >
-2 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=1.png" height="25" width="25" >
-3 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=2.png" height="25" width="25" >
-4 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=3.png" height="25" width="25" >
-5 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=4.png" height="25" width="25" >
-6 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=5.png" height="25" width="25" >
-7 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=6.png" height="25" width="25" >
-8 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=7.png" height="25" width="25" >
-9 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=8.png" height="25" width="25" >
+1 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=0.png" height="50" width="50" >
+2 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=1.png" height="50" width="50" >
+3 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=2.png" height="50" width="50" >
+4 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=3.png" height="50" width="50" >
+5 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=4.png" height="50" width="50" >
+6 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=5.png" height="50" width="50" >
+7 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=6.png" height="50" width="50" >
+8 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=7.png" height="50" width="50" >
+9 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=8.png" height="50" width="50" >
 
 
 ### Recognising the digits
