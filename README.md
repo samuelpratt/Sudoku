@@ -106,6 +106,8 @@ private void cleanUpNumberMat(Mat numberMat) {
     }
 ```
 
+The results are shown below: -
+
 1 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=0.png" height="50" width="50" >
 2 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=1.png" height="50" width="50" >
 3 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=2.png" height="50" width="50" >
