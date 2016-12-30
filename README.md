@@ -131,15 +131,15 @@ from http://sourceforge.net/projects/opencvlibrary/files/opencv-android/3.1.0/Op
 as the unit tests don't use OpenCV manager. To do this: -
  * Copy the contents of OpenCV-android-sdk/sdk/native/libs to Sudoku/puzzlescanner/src/main/jnilibs/
  
- ### Install the NDK
+### Install the NDK
  
- This is required for Tess-Two. See https://developer.android.com/ndk/guides/index.html#download-ndk
+This is required for Tess-Two. See https://developer.android.com/ndk/guides/index.html#download-ndk
  
- ### Installing Tess-Two
+### Installing Tess-Two
  
- Tess-Two is a Android fork of Tesseract OCR.
+Tess-Two is a Android fork of Tesseract OCR.
  
- TODO: Get this working
+TODO: Get this working
  
- * https://stackoverflow.com/questions/41154462/building-tess-two-into-a-project-using-android-studios-gradle-build
- * https://github.com/rmtheis/tess-two
+* https://stackoverflow.com/questions/41154462/building-tess-two-into-a-project-using-android-studios-gradle-build
+* https://github.com/rmtheis/tess-two
