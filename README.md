@@ -137,6 +137,11 @@ This is required for Tess-Two. See https://developer.android.com/ndk/guides/inde
  
 ### Tess-Two
  
-You don't need to do anything to build the project.
+You don't need to do anything to include the library other than add a Mavern reference to it in the build.gradle of the
+assembly it's used in i.e. : -
 
-However if you want to use this there's a bit of work in getting everything set up correctly. I followed the tutorial here http://imperialsoup.com/2016/04/29/simple-ocr-android-app-using-tesseract-tutorial/
+`compile 'com.rmtheis:tess-two:6.1.1'`
+
+However if you want to use this there's a bit of work in getting everything set up correctly as you need to copy the training data to a local directory. I followed the tutorial here http://imperialsoup.com/2016/04/29/simple-ocr-android-app-using-tesseract-tutorial/
+
+The training data is from https://github.com/tesseract-ocr/tessdata. I've only included the english file i.e. https://github.com/tesseract-ocr/tessdata/blob/master/eng.traineddata
