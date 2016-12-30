@@ -109,7 +109,25 @@ We can help by eroding and then dialating the image with a fairly large kernal. 
 
 ### Recognising the digits
 
-//TODO
+This is done using Tess-Two. All we do is feed the extracted digits into the parser.
+
+In order to assist recognition we hint Tess-Two and tell it we're only expecting numbers
+
+```java
+tessBaseAPI.setVariable("tessedit_char_whitelist", "0123456789");
+```
+
+We have to do a little bit of work to convert the OpenCv Mat into a format that Tess-Two understands.
+
+```java
+Mat squareMat = getMatForPosition(x, y);
+
+Bitmap squareBmp = Bitmap.createBitmap(squareMat.cols(), squareMat.rows(), Bitmap.Config.ARGB_8888);
+Utils.matToBitmap(squareMat, squareBmp);
+
+tessBaseAPI.setImage(squareBmp);
+String textFound = tessBaseAPI.getUTF8Text();
+```
 
 ## Solving the puzzle.
 
