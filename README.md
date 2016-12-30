@@ -73,6 +73,8 @@ doesn't confuse the OCR algorthm).
 
 <img src="./docs/extracted.png" height="250" width="250" >
 
+## Parsing the Puzzle
+
 ### Getting the digits
 
 To do this you need to chop the puzzle up into 9x9 chunks. As the digits probably
@@ -89,6 +91,10 @@ The first row is shown below: -
 7 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=6.png" height="25" width="25" >
 8 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=7.png" height="25" width="25" >
 9 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=8.png" height="25" width="25" >
+
+### Recognising the digits
+
+//TODO
 
 ## Solving the puzzle.
 
