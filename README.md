@@ -94,7 +94,17 @@ The first row is shown below: -
 
 However, as you can see, the digits are pretty messy and there are alot of holes and aftefacts that the thresholding didn't remove. These tend to cause issues with the OCR as it thinks some of the larger ones are numbers.
 
-We can help by eroding and then dialating the image with a fairly large kernal. This fills gaps in the digits and then blurs any artifacts. We then bit flip the image back to black on white.
+We can help by eroding and then dialating the image with a fairly large kernel. This fills gaps in the digits and then blurs any artifacts. We then bit flip the image back to black on white.
+
+```java
+private void cleanUpNumberMat(Mat numberMat) {
+    Imgproc.cvtColor(numberMat, numberMat, Imgproc.COLOR_RGB2GRAY);    
+    Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_ERODE, new Size(5, 5));
+    Imgproc.erode(numberMat, numberMat, kernel);
+    Imgproc.dilate(numberMat, numberMat, kernel);
+    Core.bitwise_not(numberMat, numberMat);
+    }
+```
 
 1 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=0.png" height="50" width="50" >
 2 <img src="./docs/cleanedDigits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=1.png" height="50" width="50" >
