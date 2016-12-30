@@ -115,6 +115,9 @@ You will need: -
 * Android SDK 25 (Nougat)
 * The Android Emulator
 * OpenCV (see below)
+* NDK (see below)
+* Tess-Two (see below)
+
 
 ### Installing OpenCV
 
@@ -127,3 +130,16 @@ from http://sourceforge.net/projects/opencvlibrary/files/opencv-android/3.1.0/Op
 * In order to get the tests in the puzzlescanner module to run you will need to import the OpenCV native binaries into the project
 as the unit tests don't use OpenCV manager. To do this: -
  * Copy the contents of OpenCV-android-sdk/sdk/native/libs to Sudoku/puzzlescanner/src/main/jnilibs/
+ 
+ ### Install the NDK
+ 
+ This is required for Tess-Two. See https://developer.android.com/ndk/guides/index.html#download-ndk
+ 
+ ### Installing Tess-Two
+ 
+ Tess-Two is a Android fork of Tesseract OCR.
+ 
+ TODO: Get this working
+ 
+ * https://stackoverflow.com/questions/41154462/building-tess-two-into-a-project-using-android-studios-gradle-build
+ * https://github.com/rmtheis/tess-two
