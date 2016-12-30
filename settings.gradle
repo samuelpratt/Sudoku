@@ -1,2 +1,2 @@
-include ':app', ':puzzlescanner', ':puzzlesolver'
+include ':app', ':puzzlescanner', ':puzzlesolver', ':tess-two'
 include ':openCVLibrary310-1'

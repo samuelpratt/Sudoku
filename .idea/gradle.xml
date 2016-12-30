@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/openCVLibrary310-1" />
             <option value="$PROJECT_DIR$/puzzlescanner" />
             <option value="$PROJECT_DIR$/puzzlesolver" />
+            <option value="$PROJECT_DIR$/tess-two" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

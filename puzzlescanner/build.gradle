@@ -29,4 +29,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.0.1'
     testCompile 'junit:junit:4.12'
     compile project(':openCVLibrary310-1')
+    compile 'com.rmtheis:tess-two:6.1.1'
 }
