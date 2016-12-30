@@ -75,7 +75,7 @@ doesn't confuse the OCR algorthm).
 
 ### Getting the digits
 
-To do this you need to chop the puzzle up into 9x9 chunks. As th digits probably
+To do this you need to chop the puzzle up into 9x9 chunks. As the digits probably
 aren't exactly in the right place I've added a border around each area.
 
 The first row is shown below: -
