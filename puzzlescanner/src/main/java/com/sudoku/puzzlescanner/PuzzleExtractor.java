@@ -14,6 +14,7 @@ import java.util.List;
 import static com.sudoku.puzzlescanner.Constants.BLACK;
 
 public class PuzzleExtractor {
+
     private Mat thresholdMat;
     private Mat largestBlobMat;
     private PuzzleOutLine puzzleOutline;

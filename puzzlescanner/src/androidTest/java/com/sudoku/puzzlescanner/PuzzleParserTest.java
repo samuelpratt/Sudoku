@@ -34,10 +34,9 @@ public class PuzzleParserTest {
     @Test
     public void validPuzzle_getSingleLetterForPositionX2Y0_returns2() throws PuzzleNotFoundException, IOException {
         Mat extractedPuzzle = BitmapFixture.readBitMapFromResouce(R.drawable.extracted);
-
         PuzzleParser sut = new PuzzleParser(extractedPuzzle, InstrumentationRegistry.getContext());
 
-        Integer number = sut.getLetterForPosition(2, 0);
+        Integer number = sut.getNumberForPosition(2, 0);
 
         Assert.assertEquals(Integer.valueOf(2), number);
 
@@ -46,11 +45,40 @@ public class PuzzleParserTest {
     @Test
     public void validPuzzle_getSingleLetterForPositionX0Y0_returnsEmptyString() throws PuzzleNotFoundException, IOException {
         Mat extractedPuzzle = BitmapFixture.readBitMapFromResouce(R.drawable.extracted);
-
         PuzzleParser sut = new PuzzleParser(extractedPuzzle, InstrumentationRegistry.getContext());
 
-        Integer number = sut.getLetterForPosition(0, 0);
+        Integer number = sut.getNumberForPosition(0, 0);
 
         Assert.assertNull(number);
+    }
+
+    @Test
+    public void validPuzzle_getPuzzle_correctDigitsReturned() throws PuzzleNotFoundException, IOException {
+        Integer[][] expectedPuzzle = new Integer[][]{
+                {null, null, null, 9, null, 5, 2, null, 7},
+                {null, null, 1, null, null, 4, 6, 8, null},
+                {2, null, null, null, null, null, null, null, 1},
+                {null, null, 3, null, 5, null, null, null, null},
+                {null, null, 8, 3, null, 2, null, 4, null},
+                {5, null, null, null, 7, null, null, null, null},
+                {9, null, null, null, null, 3, null, 7, null},
+                {null, null, 6, null, null, null, null, 5, null},
+                {3, null, null, null, 8, null, null, null, null},
+        };
+
+
+        Mat extractedPuzzle = BitmapFixture.readBitMapFromResouce(R.drawable.extracted);
+        PuzzleParser sut = new PuzzleParser(extractedPuzzle, InstrumentationRegistry.getContext());
+
+        Integer[][] foundPuzzle = sut.getPuzzle();
+
+        for (int y = 0; y < 9; y++) {
+            for (int x = 0; x < 9; x++) {
+                if (expectedPuzzle[x][y] != foundPuzzle[x][y])
+                    Assert.fail(String.format("Values at X=%d, Y=%d do not match. Expected %d, got %d", x, y, expectedPuzzle[x][y], foundPuzzle[x][y]));
+            }
+        }
+
+
     }
 }

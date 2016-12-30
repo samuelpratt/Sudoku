@@ -3,13 +3,16 @@ package com.sudoku.puzzlescanner;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 
 import org.opencv.android.Utils;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfByte;
 import org.opencv.core.Rect;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,12 +20,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static com.sudoku.puzzlescanner.Constants.NUMBER_BORDER;
-import static com.sudoku.puzzlescanner.Constants.TESS_DATA_DIR;
-import static com.sudoku.puzzlescanner.Constants.TESS_LANG;
-import static com.sudoku.puzzlescanner.Constants.TESS_TRAINING_FILE;
-
 public class PuzzleParser {
+
+    private static final int NUMBER_BORDER = 5;
+    private static final String TESS_LANG = "eng";
+    private static final String TESS_DATA_DIR = "tessdata";
+    private static final String TESS_TRAINING_FILE = "eng.traineddata";
+
+    private static final int PUZZLE_SIZE = 9;
 
     private Context context;
     private Mat puzzleMat;
@@ -41,8 +46,23 @@ public class PuzzleParser {
 
     Mat getMatForPosition(int x, int y) {
 
-        int incrementX = puzzleWidth / 9;
-        int incrementY = puzzleHeight / 9;
+        Mat numberMat = extractNumberMatFromPuzzle(x, y);
+        cleanUpNumberMat(numberMat);
+        return numberMat;
+    }
+
+    private void cleanUpNumberMat(Mat numberMat) {
+        Imgproc.cvtColor(numberMat, numberMat, Imgproc.COLOR_RGB2GRAY);
+        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_ERODE, new Size(5, 5));
+        Imgproc.erode(numberMat, numberMat, kernel);
+        Imgproc.dilate(numberMat, numberMat, kernel);
+        Core.bitwise_not(numberMat, numberMat);
+    }
+
+    @NonNull
+    private Mat extractNumberMatFromPuzzle(int x, int y) {
+        int incrementX = puzzleWidth / PUZZLE_SIZE;
+        int incrementY = puzzleHeight / PUZZLE_SIZE;
 
         int startX = (incrementX * x) - NUMBER_BORDER;
         if (startX < 0)
@@ -65,20 +85,37 @@ public class PuzzleParser {
         return new Mat(puzzleMat, rect);
     }
 
-    Integer getLetterForPosition(int x, int y) {
+    Integer getNumberForPosition(int x, int y) throws PuzzleNotFoundException {
         Mat squareMat = getMatForPosition(x, y);
 
-        MatOfByte matOfByte = new MatOfByte();
         Bitmap squareBmp = Bitmap.createBitmap(squareMat.cols(), squareMat.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(squareMat, squareBmp);
+
         tessBaseAPI.setImage(squareBmp);
         String textFound = tessBaseAPI.getUTF8Text();
 
         if (textFound == null || textFound.isEmpty())
             return null;
 
-        return Integer.parseInt(textFound);
+        Integer result;
 
+        try {
+            result = Integer.parseInt(textFound);
+        } catch (Exception ex) {
+            throw new PuzzleNotFoundException("String '" + textFound + "' couldn't be converted to an integer");
+        }
+        return result;
+    }
+
+    Integer[][] getPuzzle() throws PuzzleNotFoundException {
+        Integer[][] result = new Integer[9][9];
+
+        for (int x = 0; x < PUZZLE_SIZE; x++) {
+            for (int y = 0; y < PUZZLE_SIZE; y++) {
+                result[x][y] = getNumberForPosition(x, y);
+            }
+        }
+        return result;
     }
 
     private void setUpTessTwo() throws IOException {
@@ -91,6 +128,7 @@ public class PuzzleParser {
     private void initTestTwo() {
         tessBaseAPI = new TessBaseAPI();
         tessBaseAPI.init(context.getExternalFilesDir(null).getAbsolutePath(), TESS_LANG);
+        tessBaseAPI.setVariable("tessedit_char_whitelist", "0123456789");
     }
 
     private void copyTrainingDataIfRequired() throws IOException {

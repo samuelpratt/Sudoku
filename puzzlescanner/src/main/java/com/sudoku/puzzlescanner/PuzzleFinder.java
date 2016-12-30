@@ -22,9 +22,6 @@ import static org.opencv.imgproc.Imgproc.THRESH_BINARY;
 
 class PuzzleFinder {
 
-
-
-
     private Mat originalMat;
     private Mat greyMat;
     private Mat thresholdMat;
@@ -278,6 +275,7 @@ class PuzzleFinder {
         Imgproc.line(outLineMat, location.left.origin, location.left.destination, GREY);
         Imgproc.line(outLineMat, location.right.origin, location.right.destination, Constants.DARK_GREY);
     }
+
 
 }
 

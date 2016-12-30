@@ -8,10 +8,4 @@ class Constants {
     static final Scalar GREY = new Scalar(64);
     static final Scalar DARK_GREY = new Scalar(127);
     static final int THRESHOLD = 128;
-
-    static final int NUMBER_BORDER = 5;
-
-    static final String TESS_LANG = "eng";
-    static final String TESS_DATA_DIR = "tessdata";
-    static final String TESS_TRAINING_FILE = "eng.traineddata";
 }
