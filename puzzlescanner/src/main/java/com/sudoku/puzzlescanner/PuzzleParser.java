@@ -8,10 +8,11 @@ import android.support.annotation.NonNull;
 import com.googlecode.tesseract.android.TessBaseAPI;
 
 import org.opencv.android.Utils;
-import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
-import org.opencv.core.Size;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
@@ -20,7 +21,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class PuzzleParser {
+import static com.sudoku.puzzlescanner.Constants.BLACK;
+import static com.sudoku.puzzlescanner.Constants.GREY;
+import static com.sudoku.puzzlescanner.Constants.THRESHOLD;
+import static com.sudoku.puzzlescanner.Constants.WHITE;
+import static org.opencv.imgproc.Imgproc.THRESH_BINARY;
+
+class PuzzleParser {
 
     private static final int NUMBER_BORDER = 5;
     private static final String TESS_LANG = "eng";
@@ -47,16 +54,16 @@ public class PuzzleParser {
     Mat getMatForPosition(int x, int y) {
 
         Mat numberMat = extractNumberMatFromPuzzle(x, y);
-        cleanUpNumberMat(numberMat);
+        numberMat = cleanUpNumberMat(numberMat);
         return numberMat;
     }
 
-    private void cleanUpNumberMat(Mat numberMat) {
-        Imgproc.cvtColor(numberMat, numberMat, Imgproc.COLOR_RGB2GRAY);
-        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_ERODE, new Size(5, 5));
-        Imgproc.erode(numberMat, numberMat, kernel);
-        Imgproc.dilate(numberMat, numberMat, kernel);
-        Core.bitwise_not(numberMat, numberMat);
+    private Mat cleanUpNumberMat(Mat numberMat) {
+        Mat cleanedUpMat = numberMat.clone();
+        Imgproc.threshold(cleanedUpMat, cleanedUpMat, THRESHOLD, 255, THRESH_BINARY);
+        cleanedUpMat = findLargestBlob(cleanedUpMat);
+        return cleanedUpMat;
+
     }
 
     @NonNull
@@ -102,7 +109,7 @@ public class PuzzleParser {
         try {
             result = Integer.parseInt(textFound);
         } catch (Exception ex) {
-            throw new PuzzleNotFoundException("String '" + textFound + "' couldn't be converted to an integer");
+            throw new PuzzleNotFoundException(String.format("String '%s' couldn't be converted to an integer at x=%d y=%d ", textFound, x, y));
         }
         return result;
     }
@@ -173,5 +180,52 @@ public class PuzzleParser {
         return new File(path, TESS_DATA_DIR);
     }
 
+    private Mat findLargestBlob(Mat thresholdMat) {
+        Mat largestBlobMat = thresholdMat.clone();
+        int height = largestBlobMat.height();
+        int width = largestBlobMat.width();
 
+
+        Point maxBlobOrigin = new Point(0, 0);
+
+        int maxBlobSize = 0;
+        Mat greyMask = new Mat(height + 2, width + 2, CvType.CV_8U, new Scalar(0, 0, 0));
+        Mat blackMask = new Mat(height + 2, width + 2, CvType.CV_8U, new Scalar(0, 0, 0));
+        for (int y = 0; y < height; y++) {
+            Mat row = largestBlobMat.row(y);
+            for (int x = 0; x < width; x++) {
+                double[] value = row.get(0, x);
+                Point currentPoint = new Point(x, y);
+
+                if (value[0] > THRESHOLD) {
+                    int blobSize = Imgproc.floodFill(largestBlobMat, greyMask, currentPoint, GREY);
+                    if (blobSize > maxBlobSize) {
+                        Imgproc.floodFill(largestBlobMat, blackMask, maxBlobOrigin, BLACK);
+                        maxBlobOrigin = currentPoint;
+                        maxBlobSize = blobSize;
+                    } else {
+                        Imgproc.floodFill(largestBlobMat, blackMask, currentPoint, BLACK);
+                    }
+                }
+            }
+        }
+        double largestSize = colourLargestBlobWhite(largestBlobMat, height, width, maxBlobOrigin);
+        eraseBlobIfLessThanOnePercentOfArea(largestBlobMat, height, width, maxBlobOrigin, largestSize);
+
+
+        return largestBlobMat;
+    }
+
+    private double colourLargestBlobWhite(Mat largestBlobMat, int height, int width, Point maxBlobOrigin) {
+        Mat largeBlobMask = new Mat(height + 2, width + 2, CvType.CV_8U, BLACK);
+        return (double) Imgproc.floodFill(largestBlobMat, largeBlobMask, maxBlobOrigin, WHITE);
+    }
+
+    private void eraseBlobIfLessThanOnePercentOfArea(Mat largestBlobMat, int height, int width, Point maxBlobOrigin, double largestSize) {
+        double area = height * width;
+        if(largestSize / area < 0.01) {
+            Mat eraseMask = new Mat(height + 2, width + 2, CvType.CV_8U, BLACK);
+            Imgproc.floodFill(largestBlobMat, eraseMask, maxBlobOrigin, BLACK);
+        }
+    }
 }

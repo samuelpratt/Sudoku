@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
 
@@ -14,8 +15,9 @@ import java.io.IOException;
 public class PuzzleParserTest {
 
     @Test
-    public void validPuzzle_getMatForPosition_CorrectMatReturned() throws PuzzleNotFoundException, IOException {
+    public void validPuzzle_getMatForPosition_CorrectMatReturned() throws PuzzleNotFoundException, IOException, Exception {
         Mat extractedPuzzle = BitmapFixture.readBitMapFromResouce(R.drawable.extracted);
+        Imgproc.cvtColor(extractedPuzzle, extractedPuzzle, Imgproc.COLOR_RGB2GRAY);
 
         PuzzleParser sut = new PuzzleParser(extractedPuzzle, InstrumentationRegistry.getContext());
 
@@ -32,8 +34,10 @@ public class PuzzleParserTest {
     }
 
     @Test
-    public void validPuzzle_getSingleLetterForPositionX2Y0_returns2() throws PuzzleNotFoundException, IOException {
+    public void validPuzzle_getSingleLetterForPositionX2Y0_returns2() throws PuzzleNotFoundException, IOException, Exception {
         Mat extractedPuzzle = BitmapFixture.readBitMapFromResouce(R.drawable.extracted);
+        Imgproc.cvtColor(extractedPuzzle, extractedPuzzle, Imgproc.COLOR_RGB2GRAY);
+
         PuzzleParser sut = new PuzzleParser(extractedPuzzle, InstrumentationRegistry.getContext());
 
         Integer number = sut.getNumberForPosition(2, 0);
@@ -43,8 +47,10 @@ public class PuzzleParserTest {
     }
 
     @Test
-    public void validPuzzle_getSingleLetterForPositionX0Y0_returnsEmptyString() throws PuzzleNotFoundException, IOException {
+    public void validPuzzle_getSingleLetterForPositionX0Y0_returnsEmptyString() throws PuzzleNotFoundException, IOException, Exception {
         Mat extractedPuzzle = BitmapFixture.readBitMapFromResouce(R.drawable.extracted);
+        Imgproc.cvtColor(extractedPuzzle, extractedPuzzle, Imgproc.COLOR_RGB2GRAY);
+
         PuzzleParser sut = new PuzzleParser(extractedPuzzle, InstrumentationRegistry.getContext());
 
         Integer number = sut.getNumberForPosition(0, 0);
@@ -53,7 +59,7 @@ public class PuzzleParserTest {
     }
 
     @Test
-    public void validPuzzle_getPuzzle_correctDigitsReturned() throws PuzzleNotFoundException, IOException {
+    public void validPuzzle_getPuzzle_correctDigitsReturned() throws PuzzleNotFoundException, IOException, Exception {
         Integer[][] expectedPuzzle = new Integer[][]{
                 {null, null, null, 9, null, 5, 2, null, 7},
                 {null, null, 1, null, null, 4, 6, 8, null},
@@ -68,6 +74,8 @@ public class PuzzleParserTest {
 
 
         Mat extractedPuzzle = BitmapFixture.readBitMapFromResouce(R.drawable.extracted);
+        Imgproc.cvtColor(extractedPuzzle, extractedPuzzle, Imgproc.COLOR_RGB2GRAY);
+
         PuzzleParser sut = new PuzzleParser(extractedPuzzle, InstrumentationRegistry.getContext());
 
         Integer[][] foundPuzzle = sut.getPuzzle();
