@@ -26,8 +26,9 @@ The idea is to use: -
 * ~~Take a picture and show a preview~~
 * Get the image from the SD Card (look at https://developer.android.com/training/camera/photobasics.html#TaskPath)
 * ~~Analyse the image to find the Sudoku grid (See below)~~
-* Extract the Puzzle and read the numbers from the Sudoku grid
+* ~~Extract the Puzzle and read the numbers from the Sudoku grid~~
 * ~~Solve the puzzle~~
+* Wire it all up into a working App
 
 ## Extracting the puzzle from the image
 
