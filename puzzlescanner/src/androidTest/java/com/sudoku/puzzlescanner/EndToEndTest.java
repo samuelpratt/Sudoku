@@ -17,7 +17,7 @@ public class EndToEndTest {
 
     @Test
     public void endToEnd_getMatForPosition_CorrectMatReturned() throws PuzzleNotFoundException, IOException, Exception {
-        Mat extractedPuzzleMat = getExtractedPuzzleMat();
+        Mat extractedPuzzleMat = getExtractedPuzzleMat(R.drawable.sudoku);
 
 
         PuzzleParser sut = new PuzzleParser(extractedPuzzleMat, InstrumentationRegistry.getContext());
@@ -36,7 +36,7 @@ public class EndToEndTest {
 
     @Test
     public void endToEnd_getPuzzle_allDigitsMatch() throws PuzzleNotFoundException, IOException, Exception {
-        Mat extractedPuzzleMat = getExtractedPuzzleMat();
+        Mat extractedPuzzleMat = getExtractedPuzzleMat(R.drawable.sudoku);
 
         PuzzleParser sut = new PuzzleParser(extractedPuzzleMat, InstrumentationRegistry.getContext());
         Integer number;
@@ -57,9 +57,32 @@ public class EndToEndTest {
         assertPuzzlesMatch(expectedPuzzle, extractedPuzzle);
     }
 
-    private Mat getExtractedPuzzleMat() throws PuzzleNotFoundException {
+    @Test
+    public void endToEnd_getPuzzle2_allDigitsMatch() throws PuzzleNotFoundException, IOException, Exception {
+        Mat extractedPuzzleMat = getExtractedPuzzleMat(R.drawable.sudoku2);
+
+        PuzzleParser sut = new PuzzleParser(extractedPuzzleMat, InstrumentationRegistry.getContext());
+        Integer number;
+        Integer[][] extractedPuzzle = sut.getPuzzle();
+
+        //Assert
+        Integer[][] expectedPuzzle = new Integer[][]{
+                {null, null, null, 9, null, 5, 2, null, 7},
+                {null, null, 1, null, null, 4, 6, 8, null},
+                {2, null, null, null, null, null, null, null, 1},
+                {null, null, 3, null, 5, null, null, null, null},
+                {null, null, 8, 3, null, 2, null, 4, null},
+                {5, null, null, null, 7, null, null, null, null},
+                {9, null, null, null, null, 3, null, 7, null},
+                {null, null, 6, null, null, null, null, 5, null},
+                {3, null, null, null, 8, null, null, null, null},
+        };
+        assertPuzzlesMatch(expectedPuzzle, extractedPuzzle);
+    }
+
+    private Mat getExtractedPuzzleMat(int resource) throws PuzzleNotFoundException {
         //Read in the test Puzzle
-        Mat mat = BitmapFixture.readBitMapFromResouce(R.drawable.sudoku);
+        Mat mat = BitmapFixture.readBitMapFromResouce(resource);
 
         //Find the Puzzle
         PuzzleFinder finder = new PuzzleFinder(mat);
