@@ -92,19 +92,9 @@ The first row is shown below: -
 8 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=7.png" height="50" width="50" >
 9 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=8.png" height="50" width="50" >
 
-However, as you can see, the digits are pretty messy and there are alot of holes and aftefacts that the thresholding didn't remove. These tend to cause issues with the OCR as it thinks some of the larger ones are numbers.
+However, as you can see, there are alot of aftefacts from bits of the grid and noise that the thresholding didn't remove. These tend to cause issues with the OCR as it thinks some of the larger ones are numbers.
 
-We can help by eroding and then dialating the image with a fairly large kernel. This fills gaps in the digits and then blurs any artifacts. We then bit flip the image back to black on white.
-
-```java
-private void cleanUpNumberMat(Mat numberMat) {
-    Imgproc.cvtColor(numberMat, numberMat, Imgproc.COLOR_RGB2GRAY);    
-    Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_ERODE, new Size(5, 5));
-    Imgproc.erode(numberMat, numberMat, kernel);
-    Imgproc.dilate(numberMat, numberMat, kernel);
-    Core.bitwise_not(numberMat, numberMat);
-    }
-```
+We can help by again removing all but the biggest blob (interconnected area) as this should be the number. If the largest blob is less than a given threshold (currently 1%) of the square it's probably not a number and just an artefact in a blank square so we delete this as well.
 
 The results are shown below: -
 
