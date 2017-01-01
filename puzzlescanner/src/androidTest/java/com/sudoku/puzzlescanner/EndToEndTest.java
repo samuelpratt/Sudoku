@@ -8,15 +8,16 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class EndToEndTest {
 
     @Test
-    public void endToEnd_getMatForPosition_CorrectMatReturned() throws PuzzleNotFoundException, IOException, Exception {
+    public void endToEnd_getMatForPosition_CorrectMatReturned() throws PuzzleNotFoundException, IOException {
         Mat extractedPuzzleMat = getExtractedPuzzleMat(R.drawable.sudoku);
 
 
@@ -35,11 +36,10 @@ public class EndToEndTest {
     }
 
     @Test
-    public void endToEnd_getPuzzle_allDigitsMatch() throws PuzzleNotFoundException, IOException, Exception {
+    public void endToEnd_getPuzzle_allDigitsMatch() throws PuzzleNotFoundException, IOException {
         Mat extractedPuzzleMat = getExtractedPuzzleMat(R.drawable.sudoku);
 
         PuzzleParser sut = new PuzzleParser(extractedPuzzleMat, InstrumentationRegistry.getContext());
-        Integer number;
         Integer[][] extractedPuzzle = sut.getPuzzle();
 
         //Assert
@@ -58,11 +58,10 @@ public class EndToEndTest {
     }
 
     @Test
-    public void endToEnd_getPuzzle2_allDigitsMatch() throws PuzzleNotFoundException, IOException, Exception {
+    public void endToEnd_getPuzzle2_allDigitsMatch() throws PuzzleNotFoundException, IOException {
         Mat extractedPuzzleMat = getExtractedPuzzleMat(R.drawable.sudoku2);
 
         PuzzleParser sut = new PuzzleParser(extractedPuzzleMat, InstrumentationRegistry.getContext());
-        Integer number;
         Integer[][] extractedPuzzle = sut.getPuzzle();
 
         //Assert
@@ -76,6 +75,50 @@ public class EndToEndTest {
                 {9, null, null, null, null, 3, null, 7, null},
                 {null, null, 6, null, null, null, null, 5, null},
                 {3, null, null, null, 8, null, null, null, null},
+        };
+        assertPuzzlesMatch(expectedPuzzle, extractedPuzzle);
+    }
+
+    @Test
+    public void endToEnd_getPuzzle3_allDigitsMatch() throws PuzzleNotFoundException, IOException {
+        Mat extractedPuzzleMat = getExtractedPuzzleMat(R.drawable.sudoku3);
+
+        PuzzleParser sut = new PuzzleParser(extractedPuzzleMat, InstrumentationRegistry.getContext());
+        Integer[][] extractedPuzzle = sut.getPuzzle();
+
+        //Assert
+        Integer[][] expectedPuzzle = new Integer[][]{
+                {7, null, null, 4, null, 1, null, null, null},
+                {6, null, 3, null, 8, null, null, 1, null},
+                {null, null, null, null, null, 9, 6, null, null},
+                {9, 2, 4, null, 3, null, 7, null, null},
+                {null, 5, null, null, null, 4, null, 9, null},
+                {null, null, 8, null, 5, null, 3, 2, 4},
+                {null, null, 6, 5, null, null, null, null, null},
+                {null, 4, null, null, 9, null, 2, null, 7},
+                {null, null, null, 8, null, 4, null, null, 5},
+        };
+        assertPuzzlesMatch(expectedPuzzle, extractedPuzzle);
+    }
+
+    @Test
+    public void endToEnd_getPuzzle4_allDigitsMatch() throws PuzzleNotFoundException, IOException {
+        Mat extractedPuzzleMat = getExtractedPuzzleMat(R.drawable.sudoku4);
+
+        PuzzleParser sut = new PuzzleParser(extractedPuzzleMat, InstrumentationRegistry.getContext());
+        Integer[][] extractedPuzzle = sut.getPuzzle();
+
+        //Assert
+        Integer[][] expectedPuzzle = new Integer[][]{
+                {8, null, null, null, null, null, null, null, null},
+                {null, null, 7, 5, null, null, null, null, 9},
+                {null, 3, null, null, null, null, 1, 8, null},
+                {null, 6, null, null, null, 1, null, 5, null},
+                {null, null, 9, null, 4, null, null, null, null},
+                {null, null, null, 7, 5, null, null, null, null},
+                {null, null, 2, null, 7, null, null, null, 4},
+                {null, null, null, null, null, 3, 6, 1, null},
+                {null, null, null, null, null, null, 8, null, null},
         };
         assertPuzzlesMatch(expectedPuzzle, extractedPuzzle);
     }
@@ -95,12 +138,18 @@ public class EndToEndTest {
         return extractor.getExtractedPuzzleMat();
     }
 
-    void assertPuzzlesMatch(Integer[][] expectedPuzzle, Integer[][] extractedPuzzle) {
+    private void assertPuzzlesMatch(Integer[][] expectedPuzzle, Integer[][] extractedPuzzle) {
+        List<String> failedPoints = new ArrayList<>();
+
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 9; x++) {
                 if (expectedPuzzle[x][y] != extractedPuzzle[x][y])
-                    Assert.fail(String.format("Values at X=%d, Y=%d do not match. Expected %d, got %d", x, y, expectedPuzzle[x][y], extractedPuzzle[x][y]));
+                    failedPoints.add(String.format("Values at X=%d, Y=%d do not match. Expected %d, got %d\n", x, y, expectedPuzzle[x][y], extractedPuzzle[x][y]));
             }
         }
+        if (failedPoints.size() != 0) {
+            Assert.fail(String.format("Found %d points where the grids don't match", failedPoints.size()));
+        }
+
     }
 }

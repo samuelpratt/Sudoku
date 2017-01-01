@@ -64,7 +64,7 @@ public class PuzzleFinderTest {
         Line line1 = new Line(new Point(0, 0), new Point(10, 0));
         Line line2 = new Line(new Point(0, 10), new Point(10, 10));
 
-        Point intersection = calcIntersection(line1, line2);
+        Point intersection = line1.findIntersection(line2);
 
         Assert.assertNull(intersection);
     }
@@ -74,7 +74,7 @@ public class PuzzleFinderTest {
         Line line1 = new Line(new Point(0, 0), new Point(10, 0));
         Line line2 = new Line(new Point(0, 0), new Point(20, 0));
 
-        Point intersection = calcIntersection(line1, line2);
+        Point intersection = line1.findIntersection(line2);
 
         Assert.assertNull(intersection);
     }
@@ -84,7 +84,7 @@ public class PuzzleFinderTest {
         Line line1 = new Line(new Point(0, 5), new Point(10, 5));
         Line line2 = new Line(new Point(5, 0), new Point(5, 10));
 
-        Point intersection = calcIntersection(line1, line2);
+        Point intersection = line1.findIntersection(line2);
 
         Assert.assertEquals(new Point(5, 5), intersection);
     }
@@ -94,7 +94,7 @@ public class PuzzleFinderTest {
         Line line1 = new Line(new Point(-10, 5), new Point(10, 5));
         Line line2 = new Line(new Point(5, -10), new Point(5, 10));
 
-        Point intersection = calcIntersection(line1, line2);
+        Point intersection = line1.findIntersection(line2);
 
         Assert.assertEquals(new Point(5, 5), intersection);
     }
@@ -104,18 +104,9 @@ public class PuzzleFinderTest {
         Line line1 = new Line(new Point(10, 5), new Point(-10, 5));
         Line line2 = new Line(new Point(5, 10), new Point(5, -10));
 
-        Point intersection = calcIntersection(line1, line2);
+        Point intersection = line1.findIntersection(line2);
 
         Assert.assertEquals(new Point(5, 5), intersection);
-    }
-
-
-    private Point calcIntersection(Line line1, Line line2) {
-        Mat mat = BitmapFixture.readBitMapFromResouce(R.drawable.sudoku);
-
-        PuzzleFinder sut = new PuzzleFinder(mat);
-
-        return sut.findIntersection(line1, line2);
     }
 
 }

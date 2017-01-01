@@ -13,6 +13,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
@@ -62,6 +63,8 @@ class PuzzleParser {
         Mat cleanedUpMat = numberMat.clone();
         Imgproc.threshold(cleanedUpMat, cleanedUpMat, THRESHOLD, 255, THRESH_BINARY);
         cleanedUpMat = findLargestBlob(cleanedUpMat);
+        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_DILATE, new Size(5, 5));
+        Imgproc.dilate(cleanedUpMat, cleanedUpMat, kernel);
         return cleanedUpMat;
 
     }
@@ -109,7 +112,7 @@ class PuzzleParser {
         try {
             result = Integer.parseInt(textFound);
         } catch (Exception ex) {
-            throw new PuzzleNotFoundException(String.format("String '%s' couldn't be converted to an integer at x=%d y=%d ", textFound, x, y));
+            return -1;
         }
         return result;
     }

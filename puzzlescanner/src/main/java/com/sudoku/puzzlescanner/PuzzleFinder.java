@@ -14,8 +14,6 @@ import java.util.List;
 import static com.sudoku.puzzlescanner.Constants.BLACK;
 import static com.sudoku.puzzlescanner.Constants.GREY;
 import static com.sudoku.puzzlescanner.Constants.WHITE;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
 import static org.opencv.imgproc.Imgproc.ADAPTIVE_THRESH_MEAN_C;
 import static org.opencv.imgproc.Imgproc.MARKER_TILTED_CROSS;
 import static org.opencv.imgproc.Imgproc.THRESH_BINARY;
@@ -57,6 +55,8 @@ class PuzzleFinder {
         Imgproc.adaptiveThreshold(thresholdMat, thresholdMat, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 7, 5);
         Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_ERODE, new Size(2, 2));
         Imgproc.erode(thresholdMat, thresholdMat, kernel);
+        Mat kernelDil = Imgproc.getStructuringElement(Imgproc.MORPH_DILATE, new Size(2, 2));
+        Imgproc.dilate(thresholdMat, thresholdMat, kernelDil);
         Core.bitwise_not(thresholdMat, thresholdMat);
     }
 
@@ -134,58 +134,11 @@ class PuzzleFinder {
         for (int x = 0; x < lines; x++) {
             double[] vec = linesMat.get(x, 0);
             Vector vector = new Vector(vec[0], vec[1]);
-
-
-            Point origin = new Point();
-            Point destination = new Point();
-            double a = cos(vector.theta), b = sin(vector.theta);
-            double x0 = a * vector.rho, y0 = b * vector.rho;
-            origin.x = (x0 + width * (-b));
-            origin.y = (y0 + height * (a));
-            destination.x = (x0 - width * (-b));
-            destination.y = (y0 - height * (a));
-
-            Line line = new Line(origin, destination);
-
+            Line line = new Line(vector, height, width);
 
             houghLines.add(line);
         }
         return houghLines;
-    }
-
-
-    Point findIntersection(Line line1, Line line2) {
-        //See http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
-        double line1DeltaX = line1.destination.x - line1.origin.x;
-        double line1DeltaY = line1.destination.y - line1.origin.y;
-        double line2DeltaX = line2.destination.x - line2.origin.x;
-        double line2DeltaY = line2.destination.y - line2.origin.y;
-
-        double linesDeltaOriginX = line1.origin.x - line2.origin.x;
-        double linesDeltaOriginY = line1.origin.y - line2.origin.y;
-
-        double denominator = line1DeltaX * line2DeltaY - line2DeltaX * line1DeltaY;
-        double numeratorT = line2DeltaX * linesDeltaOriginY - line2DeltaY * linesDeltaOriginX;
-
-        double t = numeratorT / denominator;
-
-
-        if (linesAreColinear(denominator))
-            return null;
-
-
-        return calculateIntersection(line1, line1DeltaX, line1DeltaY, t);
-    }
-
-    private boolean linesAreColinear(double denominator) {
-        return denominator == 0;
-    }
-
-    private Point calculateIntersection(Line line1, double line1DeltaX, double line1DeltaY, double t) {
-        Point intersection = new Point();
-        intersection.x = line1.origin.x + (t * line1DeltaX);
-        intersection.y = line1.origin.y + (t * line1DeltaY);
-        return intersection;
     }
 
     PuzzleOutLine findOutLine() throws PuzzleNotFoundException {
@@ -206,6 +159,10 @@ class PuzzleFinder {
                     location.bottom = line;
                     continue;
                 }
+
+                if (line.getAngleFromXAxis() > 15)
+                    continue;
+
                 if (line.getMinY() < location.bottom.getMinY())
                     location.bottom = line;
                 if (line.getMaxY() > location.top.getMaxY())
@@ -218,6 +175,10 @@ class PuzzleFinder {
                     location.right = line;
                     continue;
                 }
+
+                if (line.getAngleFromXAxis() < 75)
+                    continue;
+
                 if (line.getMinX() < location.left.getMinX())
                     location.left = line;
                 if (line.getMaxX() > location.right.getMaxX())
@@ -233,19 +194,19 @@ class PuzzleFinder {
             throw new PuzzleNotFoundException("not enough vertical edges found. Need at least 2 for a rectangle.");
 
 
-        location.topLeft = findIntersection(location.top, location.left);
+        location.topLeft = location.top.findIntersection(location.left);
         if (location.topLeft == null)
             throw new PuzzleNotFoundException("Cannot find top left corner");
 
-        location.topRight = findIntersection(location.top, location.right);
+        location.topRight = location.top.findIntersection(location.right);
         if (location.topRight == null)
             throw new PuzzleNotFoundException("Cannot find top right corner");
 
-        location.bottomLeft = findIntersection(location.bottom, location.left);
+        location.bottomLeft = location.bottom.findIntersection(location.left);
         if (location.topLeft == null)
             throw new PuzzleNotFoundException("Cannot find bottom left corner");
 
-        location.bottomRight = findIntersection(location.bottom, location.right);
+        location.bottomRight = location.bottom.findIntersection(location.right);
         if (location.topLeft == null)
             throw new PuzzleNotFoundException("Cannot find bottom right corner");
 

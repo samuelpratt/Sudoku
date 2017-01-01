@@ -85,7 +85,7 @@ public class PuzzleExtractor {
                 if (value[0] > Constants.THRESHOLD) {
                     Mat blackMask = new Mat(height + 2, width + 2, CvType.CV_8U, new Scalar(0, 0, 0));
                     Imgproc.floodFill(extractedPuzzleMat, blackMask, currentPoint, BLACK);
-                    break;
+                    return;
                 }
             }
         }

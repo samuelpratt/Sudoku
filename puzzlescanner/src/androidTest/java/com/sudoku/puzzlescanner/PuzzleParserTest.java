@@ -9,14 +9,12 @@ import org.junit.runner.RunWith;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.IOException;
-
 @RunWith(AndroidJUnit4.class)
 public class PuzzleParserTest {
 
     @Test
-    public void validPuzzle_getMatForPosition_CorrectMatReturned() throws PuzzleNotFoundException, IOException, Exception {
-        Mat extractedPuzzle = BitmapFixture.readBitMapFromResouce(R.drawable.extracted);
+    public void validPuzzle_getMatForPosition_CorrectMatReturned() throws Exception {
+        Mat extractedPuzzle = BitmapFixture.readBitMapFromResouce(R.drawable.extracted4);
         Imgproc.cvtColor(extractedPuzzle, extractedPuzzle, Imgproc.COLOR_RGB2GRAY);
 
         PuzzleParser sut = new PuzzleParser(extractedPuzzle, InstrumentationRegistry.getContext());
@@ -34,7 +32,7 @@ public class PuzzleParserTest {
     }
 
     @Test
-    public void validPuzzle_getSingleLetterForPositionX2Y0_returns2() throws PuzzleNotFoundException, IOException, Exception {
+    public void validPuzzle_getSingleLetterForPositionX2Y0_returns2() throws Exception {
         Mat extractedPuzzle = BitmapFixture.readBitMapFromResouce(R.drawable.extracted);
         Imgproc.cvtColor(extractedPuzzle, extractedPuzzle, Imgproc.COLOR_RGB2GRAY);
 
@@ -47,7 +45,7 @@ public class PuzzleParserTest {
     }
 
     @Test
-    public void validPuzzle_getSingleLetterForPositionX0Y0_returnsEmptyString() throws PuzzleNotFoundException, IOException, Exception {
+    public void validPuzzle_getSingleLetterForPositionX0Y0_returnsEmptyString() throws Exception {
         Mat extractedPuzzle = BitmapFixture.readBitMapFromResouce(R.drawable.extracted);
         Imgproc.cvtColor(extractedPuzzle, extractedPuzzle, Imgproc.COLOR_RGB2GRAY);
 
@@ -59,7 +57,7 @@ public class PuzzleParserTest {
     }
 
     @Test
-    public void validPuzzle_getPuzzle_correctDigitsReturned() throws PuzzleNotFoundException, IOException, Exception {
+    public void validPuzzle_getPuzzle_correctDigitsReturned() throws Exception {
         Integer[][] expectedPuzzle = new Integer[][]{
                 {null, null, null, 9, null, 5, 2, null, 7},
                 {null, null, 1, null, null, 4, 6, 8, null},
