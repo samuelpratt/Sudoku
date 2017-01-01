@@ -26,8 +26,9 @@ The idea is to use: -
 * ~~Take a picture and show a preview~~
 * Get the image from the SD Card (look at https://developer.android.com/training/camera/photobasics.html#TaskPath)
 * ~~Analyse the image to find the Sudoku grid (See below)~~
-* Extract the Puzzle and read the numbers from the Sudoku grid
+* ~~Extract the Puzzle and read the numbers from the Sudoku grid~~
 * ~~Solve the puzzle~~
+* Wire it all up into a working App
 
 ## Extracting the puzzle from the image
 
@@ -92,7 +93,7 @@ The first row is shown below: -
 8 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=7.png" height="50" width="50" >
 9 <img src="./docs/digits/validPuzzle_getMatForPosition_CorrectMatReturnedy=0x=8.png" height="50" width="50" >
 
-However, as you can see, there are alot of aftefacts from bits of the grid and noise that the thresholding didn't remove. These tend to cause issues with the OCR as it thinks some of the larger ones are numbers.
+However, as you can see, there are alot of artefacts from bits of the grid and noise that the thresholding didn't remove. These tend to cause issues with the OCR as it thinks some of the larger ones are numbers.
 
 We can help by again removing all but the biggest blob (interconnected area) as this should be the number. If the largest blob is less than a given threshold (currently 1%) of the square it's probably not a number and just an artefact in a blank square so we delete this as well.
 
