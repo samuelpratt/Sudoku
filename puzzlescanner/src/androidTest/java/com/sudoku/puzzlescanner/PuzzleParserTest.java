@@ -9,6 +9,8 @@ import org.junit.runner.RunWith;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.IOException;
+
 @RunWith(AndroidJUnit4.class)
 public class PuzzleParserTest {
 
@@ -57,7 +59,7 @@ public class PuzzleParserTest {
     }
 
     @Test
-    public void validPuzzle_getPuzzle_correctDigitsReturned() throws Exception {
+    public void validExtractedPuzzle_getPuzzle_correctDigitsReturned() throws Exception {
         Integer[][] expectedPuzzle = new Integer[][]{
                 {null, null, null, 9, null, 5, 2, null, 7},
                 {null, null, 1, null, null, 4, 6, 8, null},
@@ -69,9 +71,31 @@ public class PuzzleParserTest {
                 {null, null, 6, null, null, null, null, 5, null},
                 {3, null, null, null, 8, null, null, null, null},
         };
+        int puzzle = R.drawable.extracted;
 
+        parsePuzzle(expectedPuzzle, puzzle);
+    }
 
-        Mat extractedPuzzle = BitmapFixture.readBitMapFromResouce(R.drawable.extracted);
+    @Test
+    public void validExtractedPuzzle4_getPuzzle_correctDigitsReturned() throws Exception {
+        Integer[][] expectedPuzzle = new Integer[][]{
+                {8, null, null, null, null, null, null, null, null},
+                {null, null, 7, 5, null, null, null, null, 9},
+                {null, 3, null, null, null, null, 1, 8, null},
+                {null, 6, null, null, null, 1, null, 5, null},
+                {null, null, 9, null, 4, null, null, null, null},
+                {null, null, null, 7, 5, null, null, null, null},
+                {null, null, 2, null, 7, null, null, null, 4},
+                {null, null, null, null, null, 3, 6, 1, null},
+                {null, null, null, null, null, null, 8, null, null},
+        };
+        int puzzle = R.drawable.extracted4;
+
+        parsePuzzle(expectedPuzzle, puzzle);
+    }
+
+    private void parsePuzzle(Integer[][] expectedPuzzle, int puzzle) throws IOException, PuzzleNotFoundException {
+        Mat extractedPuzzle = BitmapFixture.readBitMapFromResouce(puzzle);
         Imgproc.cvtColor(extractedPuzzle, extractedPuzzle, Imgproc.COLOR_RGB2GRAY);
 
         PuzzleParser sut = new PuzzleParser(extractedPuzzle, InstrumentationRegistry.getContext());
@@ -84,7 +108,5 @@ public class PuzzleParserTest {
                     Assert.fail(String.format("Values at X=%d, Y=%d do not match. Expected %d, got %d", x, y, expectedPuzzle[x][y], foundPuzzle[x][y]));
             }
         }
-
-
     }
 }
