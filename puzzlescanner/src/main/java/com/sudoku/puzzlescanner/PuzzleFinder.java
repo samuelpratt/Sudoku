@@ -145,6 +145,9 @@ class PuzzleFinder {
 
         PuzzleOutLine location = new PuzzleOutLine();
 
+        int height = getLargestBlobMat().height();
+        int width = getLargestBlobMat().width();
+
         int countHorizontalLines = 0;
         int countVerticalLines = 0;
 
@@ -160,7 +163,9 @@ class PuzzleFinder {
                     continue;
                 }
 
-                if (line.getAngleFromXAxis() > 15)
+                if (line.getAngleFromXAxis() > 6)
+                    continue;
+                if (line.getAngleFromXAxis() < 1 && (line.getMinY() < 5 || line.getMaxY() > height - 5))
                     continue;
 
                 if (line.getMinY() < location.bottom.getMinY())
@@ -176,7 +181,9 @@ class PuzzleFinder {
                     continue;
                 }
 
-                if (line.getAngleFromXAxis() < 75)
+                if (line.getAngleFromXAxis() < 84)
+                    continue;
+                if (line.getAngleFromXAxis() > 89 && (line.getMinX() < 5 || line.getMaxX() > width - 5))
                     continue;
 
                 if (line.getMinX() < location.left.getMinX())
@@ -221,7 +228,7 @@ class PuzzleFinder {
         return outLineMat;
     }
 
-    void generateOutlineMat() throws PuzzleNotFoundException {
+    private void generateOutlineMat() throws PuzzleNotFoundException {
         outLineMat = getGreyMat().clone();
 
         PuzzleOutLine location = findOutLine();

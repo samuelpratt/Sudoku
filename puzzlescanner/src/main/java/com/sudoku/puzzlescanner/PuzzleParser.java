@@ -114,6 +114,10 @@ class PuzzleParser {
         } catch (Exception ex) {
             return -1;
         }
+
+        if (result < 1 || result > 9)
+            return -1;
+
         return result;
     }
 

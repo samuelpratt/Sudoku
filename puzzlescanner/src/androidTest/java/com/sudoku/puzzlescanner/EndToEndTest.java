@@ -18,7 +18,7 @@ public class EndToEndTest {
 
     @Test
     public void endToEnd_getMatForPosition_CorrectMatReturned() throws PuzzleNotFoundException, IOException {
-        Mat extractedPuzzleMat = getExtractedPuzzleMat(R.drawable.sudoku);
+        Mat extractedPuzzleMat = getExtractedPuzzleMat(R.drawable.sudoku3);
 
 
         PuzzleParser sut = new PuzzleParser(extractedPuzzleMat, InstrumentationRegistry.getContext());
@@ -88,15 +88,15 @@ public class EndToEndTest {
 
         //Assert
         Integer[][] expectedPuzzle = new Integer[][]{
-                {7, null, null, 4, null, 1, null, null, null},
-                {6, null, 3, null, 8, null, null, 1, null},
-                {null, null, null, null, null, 9, 6, null, null},
-                {9, 2, 4, null, 3, null, 7, null, null},
-                {null, 5, null, null, null, 4, null, 9, null},
-                {null, null, 8, null, 5, null, 3, 2, 4},
-                {null, null, 6, 5, null, null, null, null, null},
-                {null, 4, null, null, 9, null, 2, null, 7},
-                {null, null, null, 8, null, 4, null, null, 5},
+                {null, null, null, null, null, null, 2, 4, null},
+                {3, null, 2, null, null, null, null, null, 1},
+                {9, null, null, null, null, null, null, null, null},
+                {null, null, 8, null, null, 4, 5, 7, null},
+                {4, null, null, null, null, 2, 3, null, null},
+                {null, null, 6, 1, null, 5, null, 9, null},
+                {null, null, 7, null, null, null, null, null, null},
+                {null, 1, null, 2, 3, 8, null, null, null},
+                {null, 5, null, null, null, null, null, null, null},
         };
         assertPuzzlesMatch(expectedPuzzle, extractedPuzzle);
     }

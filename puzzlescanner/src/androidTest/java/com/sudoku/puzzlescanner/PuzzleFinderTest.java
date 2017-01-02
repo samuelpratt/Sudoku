@@ -13,7 +13,7 @@ public class PuzzleFinderTest {
 
     @Test
     public void validImage_getGreyMat_ImageIsGreyScale() {
-        Mat mat = BitmapFixture.readBitMapFromResouce(R.drawable.sudoku);
+        Mat mat = BitmapFixture.readBitMapFromResouce(R.drawable.sudoku3);
         PuzzleFinder sut = new PuzzleFinder(mat);
         Mat greyMat = sut.getGreyMat();
         BitmapFixture.writePngForMat(greyMat, new Object() {
@@ -22,7 +22,7 @@ public class PuzzleFinderTest {
 
     @Test
     public void validImage_getThresholdMat_ImageIsThresholded() {
-        Mat mat = BitmapFixture.readBitMapFromResouce(R.drawable.sudoku);
+        Mat mat = BitmapFixture.readBitMapFromResouce(R.drawable.sudoku3);
         PuzzleFinder sut = new PuzzleFinder(mat);
         Mat thresholdMat = sut.getThresholdMat();
         BitmapFixture.writePngForMat(thresholdMat, new Object() {
@@ -31,7 +31,7 @@ public class PuzzleFinderTest {
 
     @Test
     public void validImage_getBlobMat_LargestBlobFound() {
-        Mat mat = BitmapFixture.readBitMapFromResouce(R.drawable.sudoku);
+        Mat mat = BitmapFixture.readBitMapFromResouce(R.drawable.sudoku3);
 
         PuzzleFinder sut = new PuzzleFinder(mat);
         Mat blobMat = sut.getLargestBlobMat();
@@ -41,7 +41,7 @@ public class PuzzleFinderTest {
 
     @Test
     public void validImage_getHoughLinesMat_LinesInCorrectPlace() {
-        Mat mat = BitmapFixture.readBitMapFromResouce(R.drawable.sudoku);
+        Mat mat = BitmapFixture.readBitMapFromResouce(R.drawable.sudoku3);
 
         PuzzleFinder sut = new PuzzleFinder(mat);
         Mat linesMat = sut.getHoughLinesMat();
@@ -51,7 +51,7 @@ public class PuzzleFinderTest {
 
     @Test
     public void validImage_getOutlineMat_CornersInCorrectPlace() throws PuzzleNotFoundException {
-        Mat mat = BitmapFixture.readBitMapFromResouce(R.drawable.sudoku);
+        Mat mat = BitmapFixture.readBitMapFromResouce(R.drawable.sudoku3);
 
         PuzzleFinder sut = new PuzzleFinder(mat);
         Mat outlineMat = sut.getOutLineMat();
