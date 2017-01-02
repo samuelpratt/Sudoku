@@ -50,6 +50,8 @@ This involves: -
 
 ### Finding the Grid
 
+#### Algorthm
+
 This involves: -
 
 * Isolating the grid from the rest of the image (I used a simple floodfill agorthm based on the ImageShack article to find the largest connected area in the image)
@@ -61,6 +63,18 @@ This involves: -
 <img src="./docs/largestBlob.png" height="250" width="250" >
 <img src="./docs/houghLines.png" height="250" width="250" >
 <img src="./docs/outline.png" height="250" width="250" >
+
+#### Issues that can occur
+
+The two main issues we get are: -
+
+* Sometimes the Hough transform detects the edge of the image. Hence the agorthm will discard any lines running within 1 degree of parallel to the edge of the image within 5px of the edge
+
+* Sometimes the Hough transform detects the diagnoals of the grid as an edge as these go through the corners they tend to get detected as the lowest point in the image. We therefore disguard any lines more than 7 degrees from either Horizontal or Vertical.
+
+Both of these issues can be seen below: -
+
+<img src="./docs/diagonal.png" height="250" width="250" >
 
 ### Extracting the Puzzle
 
