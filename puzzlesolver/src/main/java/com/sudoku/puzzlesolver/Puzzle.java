@@ -1,14 +1,13 @@
 package com.sudoku.puzzlesolver;
 
-class Puzzle {
+public class Puzzle {
 
-    static int MAX_VALUE = 9;
-    static int MIN_VALUE = 1;
-    static int SIZE = 9;
-
+    public static final int SIZE = 9;
+    static final int MAX_VALUE = 9;
+    static final int MIN_VALUE = 1;
     private Integer[][] Numbers;
 
-    Puzzle() {
+    public Puzzle() {
         initNumbers();
     }
 
@@ -40,7 +39,7 @@ class Puzzle {
             throw new IllegalArgumentException("Y is out of range.");
     }
 
-    void setNumber(Point point, Integer value) throws IllegalArgumentException {
+    public void setNumber(Point point, Integer value) throws IllegalArgumentException {
         AssertValidIndexes(point);
         assertValidValue(value);
         Numbers[point.x][point.y] = value;
@@ -58,7 +57,7 @@ class Puzzle {
             throw new IllegalArgumentException("Value must be greater than 0 and less than the SIZE of the grid.");
     }
 
-    Integer getNumber(Point point) throws IllegalArgumentException {
+    public Integer getNumber(Point point) throws IllegalArgumentException {
         AssertValidIndexes(point);
         return Numbers[point.x][point.y];
     }

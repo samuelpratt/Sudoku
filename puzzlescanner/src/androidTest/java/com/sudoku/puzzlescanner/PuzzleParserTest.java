@@ -16,7 +16,7 @@ public class PuzzleParserTest {
 
     @Test
     public void validPuzzle_getMatForPosition_CorrectMatReturned() throws Exception {
-        Mat extractedPuzzle = BitmapFixture.readBitMapFromResouce(R.drawable.extracted4);
+        Mat extractedPuzzle = BitmapFixture.readBitMapFromResouce(R.drawable.extracted);
         Imgproc.cvtColor(extractedPuzzle, extractedPuzzle, Imgproc.COLOR_RGB2GRAY);
 
         PuzzleParser sut = new PuzzleParser(extractedPuzzle, InstrumentationRegistry.getContext());
