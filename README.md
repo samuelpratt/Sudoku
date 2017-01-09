@@ -24,7 +24,7 @@ The idea is to use: -
 
 * ~~Work out how to create a basic Android App~~
 * ~~Take a picture and show a preview~~
-* Get the image from the SD Card (look at https://developer.android.com/training/camera/photobasics.html#TaskPath)
+* ~~Get the image from the SD Card (look at https://developer.android.com/training/camera/photobasics.html#TaskPath)~~
 * ~~Analyse the image to find the Sudoku grid (See below)~~
 * ~~Extract the Puzzle and read the numbers from the Sudoku grid~~
 * ~~Solve the puzzle~~
