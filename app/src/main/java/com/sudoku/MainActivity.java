@@ -6,28 +6,36 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.GridView;
 
-import com.sudoku.puzzlesolver.Point;
 import com.sudoku.puzzlesolver.Puzzle;
+import com.sudoku.puzzlesolver.Solver;
 
 public class MainActivity extends AppCompatActivity {
+
+    private Puzzle puzzle;
+
+    public void updatePuzzle(Puzzle puzzle) {
+        this.puzzle = puzzle;
+        GridView gridView = (GridView) findViewById(R.id.gridView1);
+        PuzzleAdaptor puzzleAdapter = new PuzzleAdaptor(this, this.puzzle);
+        gridView.setAdapter(puzzleAdapter);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        GridView gridView = (GridView) findViewById(R.id.gridView1);
-        Puzzle puzzle = new Puzzle();
-        puzzle.setNumber(new Point(0, 0), 1);
-        puzzle.setNumber(new Point(8, 0), 2);
-        puzzle.setNumber(new Point(0, 8), 3);
-        puzzle.setNumber(new Point(8, 8), 7);
-        PuzzleAdaptor booksAdapter = new PuzzleAdaptor(this, puzzle);
-        gridView.setAdapter(booksAdapter);
+        updatePuzzle(new Puzzle());
     }
 
     public void TakeAPicture(View v) throws Exception {
         Intent takeAPictureIntent = new Intent(this, TakeAPictureActivity.class);
         startActivity(takeAPictureIntent);
+    }
+
+    public void SolvePuzzle(View v) throws Exception {
+        Solver puzzleSolver = new Solver(this.puzzle);
+        Puzzle solvedPuzzle = puzzleSolver.solvePuzzle();
+        updatePuzzle(solvedPuzzle);
+
     }
 }

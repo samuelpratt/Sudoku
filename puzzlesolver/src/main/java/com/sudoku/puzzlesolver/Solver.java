@@ -3,15 +3,15 @@ package com.sudoku.puzzlesolver;
 /**
  * Based on https://see.stanford.edu/materials/icspacs106b/Lecture11.pdf
  */
-class Solver {
+public class Solver {
     private Puzzle originalPuzzle;
 
 
-    Solver(Puzzle puzzle) {
+    public Solver(Puzzle puzzle) {
         this.originalPuzzle = puzzle;
     }
 
-    Puzzle solvePuzzle() {
+    public Puzzle solvePuzzle() {
         Puzzle workingPuzzle = new Puzzle(originalPuzzle);
         solve(workingPuzzle);
         return workingPuzzle;
