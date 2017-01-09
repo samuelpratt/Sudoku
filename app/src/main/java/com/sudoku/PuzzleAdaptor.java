@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import com.sudoku.puzzlesolver.Point;
@@ -50,7 +51,13 @@ public class PuzzleAdaptor extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.linearlayout_number, null);
         }
 
+        GridView par = (GridView) parent;
+        int width = ((GridView) parent).getColumnWidth();
+
         TextView textView = (TextView) convertView.findViewById(R.id.number);
+
+        textView.getLayoutParams().height = width;
+        textView.getLayoutParams().width = width;
 
 
         Point p = getPoint(position);
