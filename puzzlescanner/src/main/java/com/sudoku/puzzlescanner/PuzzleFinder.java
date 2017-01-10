@@ -118,6 +118,7 @@ class PuzzleFinder {
     }
 
     private List<Line> getHoughLines() {
+        //Todo: this isn't correct!
         Mat linesMat = getLargestBlobMat().clone();
         int width = thresholdMat.width();
         int height = thresholdMat.height();
