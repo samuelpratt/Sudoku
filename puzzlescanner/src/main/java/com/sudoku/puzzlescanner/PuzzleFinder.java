@@ -118,13 +118,13 @@ class PuzzleFinder {
     }
 
     private List<Line> getHoughLines() {
-        //Todo: this isn't correct!
         Mat linesMat = getLargestBlobMat().clone();
-        int width = thresholdMat.width();
-        int height = thresholdMat.height();
+        Mat largestBlobMat = getLargestBlobMat();
+        int width = largestBlobMat.width();
+        int height = largestBlobMat.height();
 
         //Need to think about the threshold as getting this correct is very important!
-        Imgproc.HoughLines(thresholdMat, linesMat, (double) 1, Math.PI / 180, 400);
+        Imgproc.HoughLines(largestBlobMat, linesMat, (double) 1, Math.PI / 180, 400);
 
         //The Hough transform returns a series of lines in Polar format this is returned in the
         //form of a Mat where each row is a vector where row[0] is rho and row[1] is theta
