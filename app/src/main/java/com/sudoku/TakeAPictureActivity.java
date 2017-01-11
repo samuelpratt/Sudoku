@@ -1,5 +1,6 @@
 package com.sudoku;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -64,7 +65,6 @@ public class TakeAPictureActivity extends Activity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (pictureWasTakenOk(requestCode, resultCode)) {
-
             processImage();
         } else {
             cancelAndReturnToMainActivity();
@@ -78,11 +78,11 @@ public class TakeAPictureActivity extends Activity{
 
             PuzzleScanner puzzleScanner = new PuzzleScanner(imageBitmap, this.getApplicationContext());
             ImageView imageView = (ImageView)findViewById(R.id.PreviewImageView);
-
+            //ToDO: push this down into the constructor
             String[] methodChain = new String[]{"getThreshold", "getLargestBlob", "getHoughLines", "getOutLine", "extractPuzzle"};
-
-            UpdateImageTask updateImageTask = new UpdateImageTask(imageView, puzzleScanner, methodChain);
+            UpdateImageTask updateImageTask = new UpdateImageTask(imageView, puzzleScanner, methodChain, this);
             updateImageTask.execute();
+
         } catch (Exception ex) {
             Log.e(null, "Error extracting puzzle", ex);
         }
@@ -110,13 +110,23 @@ public class TakeAPictureActivity extends Activity{
         startActivity(mainActivityIntent);
     }
 
+    //Todo: need to work out a better way to do this as this is currently pretty nasty!
+    void passPuzzleAndReturnToMainActivity(Integer[][] puzzle) {
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Puzzle", puzzle);
+        Intent mainActivityIntent = new Intent(this, MainActivity.class);
+        mainActivityIntent.putExtras(bundle);
+        startActivity(mainActivityIntent);
+    }
+
     private boolean pictureWasTakenOk(int requestCode, int resultCode) {
         return requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK;
     }
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
@@ -124,8 +134,6 @@ public class TakeAPictureActivity extends Activity{
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-
-        // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }
@@ -136,10 +144,12 @@ class UpdateImageTask extends AsyncTask<Void, Void, Bitmap> {
     private final WeakReference<ImageView> imageViewReference;
     private WeakReference<PuzzleScanner> puzzleScannerReference;
     private String[] methodChain;
+    private WeakReference<TakeAPictureActivity> activityReference;
 
-    UpdateImageTask(ImageView imageView, PuzzleScanner puzzleScanner, String[] methodChain) {
+    UpdateImageTask(ImageView imageView, PuzzleScanner puzzleScanner, String[] methodChain, TakeAPictureActivity activity) {
         this.imageViewReference = new WeakReference<>(imageView);
         this.puzzleScannerReference = new WeakReference<>(puzzleScanner);
+        this.activityReference = new WeakReference<>(activity);
         this.methodChain = methodChain;
     }
 
@@ -148,6 +158,8 @@ class UpdateImageTask extends AsyncTask<Void, Void, Bitmap> {
         Bitmap result = null;
         Method[] allMethods = puzzleScannerReference.get().getClass().getDeclaredMethods();
         for (Method m : allMethods) {
+            //String.equals doesn't work in all android versions.
+            //noinspection StringEquality
             if (m.getName() == methodChain[0]) {
                 try {
                     result = (Bitmap) m.invoke(puzzleScannerReference.get());
@@ -162,6 +174,30 @@ class UpdateImageTask extends AsyncTask<Void, Void, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap bitmap) {
+        updateImage(bitmap);
+        String[] newMethodChain = getNewMethodChain(methodChain);
+        if (noMoreMethodsInChain(newMethodChain)) {
+            passPuzzleAndControlBackToMainActicity();
+            return;
+        }
+        executeNextStepInMethodChain(newMethodChain);
+    }
+
+    private void passPuzzleAndControlBackToMainActicity() {
+        Integer[][] puzzle = null;
+        try {
+            puzzle = puzzleScannerReference.get().getPuzzle();
+        } catch (Exception ex) {
+            Log.e(null, "error calling getting puzzle", ex);
+        }
+        activityReference.get().passPuzzleAndReturnToMainActivity(puzzle);
+    }
+
+    private boolean noMoreMethodsInChain(String[] newMethodChain) {
+        return newMethodChain.length == 0;
+    }
+
+    private void updateImage(Bitmap bitmap) {
         if (bitmap != null) {
             final ImageView imageView = imageViewReference.get();
             if (imageView != null) {
@@ -169,10 +205,11 @@ class UpdateImageTask extends AsyncTask<Void, Void, Bitmap> {
                 imageView.invalidate();
             }
         }
-        String[] newMethodChain = getNewMethodChain(methodChain);
-        if (newMethodChain.length == 0)
-            return;
-        UpdateImageTask chainTask = new UpdateImageTask(this.imageViewReference.get(), this.puzzleScannerReference.get(), newMethodChain);
+    }
+
+    private void executeNextStepInMethodChain(String[] newMethodChain) {
+        UpdateImageTask chainTask = new UpdateImageTask(this.imageViewReference.get(),
+                this.puzzleScannerReference.get(), newMethodChain, this.activityReference.get());
         chainTask.execute();
     }
 
@@ -181,9 +218,7 @@ class UpdateImageTask extends AsyncTask<Void, Void, Bitmap> {
             return new String[0];
 
         String[] newMethodChain = new String[methodChain.length - 1];
-        for (int i = 1; i < methodChain.length; i++) {
-            newMethodChain[i - 1] = methodChain[i];
-        }
+        System.arraycopy(methodChain, 1, newMethodChain, 0, methodChain.length - 1);
         return newMethodChain;
     }
 }

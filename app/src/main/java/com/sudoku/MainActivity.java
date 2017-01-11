@@ -24,7 +24,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        updatePuzzle(new Puzzle());
+
+        initPuzzleOrGetFromExtras();
+
+        updatePuzzle(puzzle);
+    }
+
+    private void initPuzzleOrGetFromExtras() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle.get("Puzzle") != null) {
+            puzzle = new Puzzle((Integer[][]) bundle.get("Puzzle"));
+        } else {
+            puzzle = new Puzzle();
+        }
     }
 
     public void TakeAPicture(View v) throws Exception {

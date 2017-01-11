@@ -20,7 +20,7 @@ public class Puzzle {
         }
     }
 
-    Puzzle(Integer[][] problem) {
+    public Puzzle(Integer[][] problem) {
         initNumbers();
         for (AllPoints allPoints = new AllPoints(); allPoints.hasNext(); ) {
             Point p = allPoints.next();
