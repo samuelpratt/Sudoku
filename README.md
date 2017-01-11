@@ -23,7 +23,8 @@ so please don't judge me too much :-) I know this looks a bit rough! The point w
 * ~~Extract the Puzzle and read the numbers from the Sudoku grid~~
 * ~~Solve the puzzle~~
 * ~~Wire it all up into a working App~~
-* Make it a bit more robust
+* Redesign the take a picture activity as it's currently a fairly ugly
+* Make it a bit more robust: -
   * Fix the bug where the app crashes when you quit the camera
   * Fix the bug when the PuzzleNotFoundException isn't caught properly when the digits are being extracted
   * Work out why it's crashing when started from the debugger
