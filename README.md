@@ -14,12 +14,6 @@ Please bear in mind that I'm: -
 
 so please don't judge me too much :-) I know this looks a bit rough! The point was for me to have a play with some fun technologies rather than to produce a polished commercial App.
 
-## How?
-
-The idea is to use: -
-* An off-the-shelf OCR library, e.g. Tesseract https://github.com/tesseract-ocr/tesseract
-* A basic backtracking Sudoku solving algorithm
-
 ## //TODO:
 
 * ~~Work out how to create a basic Android App~~
@@ -28,7 +22,14 @@ The idea is to use: -
 * ~~Analyse the image to find the Sudoku grid (See below)~~
 * ~~Extract the Puzzle and read the numbers from the Sudoku grid~~
 * ~~Solve the puzzle~~
-* Wire it all up into a working App
+* ~~Wire it all up into a working App~~
+* Make it a bit more robust
+  * Fix the bug where the app crashes when you quit the camera
+  * Fix the bug when the PuzzleNotFoundException isn't caught properly when the digits are being extracted
+  * Work out why it's crashing when started from the debugger
+* Upload the app onto the play store
+  * Fix the namespace (com.sudoku is taken)
+  * Generate the required banner and hi-res icons
 
 ## Extracting the puzzle from the image
 
@@ -126,7 +127,7 @@ The results are shown below: -
 
 ### Recognising the digits
 
-This is done using Tess-Two. All we do is feed the extracted digits into the parser.
+This is done using Tess-Two (https://github.com/rmtheis/tess-two). All we do is feed the extracted digits into the parser.
 
 In order to assist recognition we hint Tess-Two and tell it we're only expecting numbers
 
