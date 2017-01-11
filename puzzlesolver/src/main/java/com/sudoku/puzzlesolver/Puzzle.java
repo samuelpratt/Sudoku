@@ -53,7 +53,7 @@ public class Puzzle {
     private void assertValidValue(Integer value) {
         if (value == null)
             return;
-        if (value < MIN_VALUE || value > MAX_VALUE)
+        if ((value < MIN_VALUE || value > MAX_VALUE) && value != -1)
             throw new IllegalArgumentException("Value must be greater than 0 and less than the SIZE of the grid.");
     }
 
@@ -65,7 +65,7 @@ public class Puzzle {
     Point findNextUnassignedLocation() {
         for (AllPoints allPoints = new AllPoints(); allPoints.hasNext(); ) {
             Point currentPoint = allPoints.next();
-            if (getNumber(currentPoint) == null) {
+            if (getNumber(currentPoint) == null || getNumber(currentPoint) == -1) {
                 return currentPoint;
             }
         }

@@ -177,13 +177,13 @@ class UpdateImageTask extends AsyncTask<Void, Void, Bitmap> {
         updateImage(bitmap);
         String[] newMethodChain = getNewMethodChain(methodChain);
         if (noMoreMethodsInChain(newMethodChain)) {
-            passPuzzleAndControlBackToMainActicity();
+            parsePuzzleAndControlBackToMainActicity();
             return;
         }
         executeNextStepInMethodChain(newMethodChain);
     }
 
-    private void passPuzzleAndControlBackToMainActicity() {
+    private void parsePuzzleAndControlBackToMainActicity() {
         Integer[][] puzzle = null;
         try {
             puzzle = puzzleScannerReference.get().getPuzzle();

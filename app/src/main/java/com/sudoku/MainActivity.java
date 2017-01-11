@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initPuzzleOrGetFromExtras() {
         Bundle bundle = getIntent().getExtras();
-        if (bundle.get("Puzzle") != null) {
+        if (bundle != null && bundle.get("Puzzle") != null) {
             puzzle = new Puzzle((Integer[][]) bundle.get("Puzzle"));
         } else {
             puzzle = new Puzzle();

@@ -169,4 +169,5 @@ public class PuzzleTest {
             Assert.assertEquals(valid2dArray[currentPoint.x][currentPoint.y], sut.getNumber(currentPoint));
         }
     }
+
 }
