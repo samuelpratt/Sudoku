@@ -25,9 +25,10 @@ so please don't judge me too much :-) I know this looks a bit rough! The point w
 * ~~Wire it all up into a working App~~
 * Redesign the take a picture activity as it's currently a fairly ugly
 * Make it a bit more robust: -
-  * Fix the bug where the app crashes when you quit the camera
+  * ~~Fix the bug where the app crashes when you quit the camera~~
   * Fix the bug when the PuzzleNotFoundException isn't caught properly when the digits are being extracted
-  * Work out why it's crashing when started from the debugger
+  * ~~Work out why it's crashing when started from the debugger~~
+  * Work out what's going on with the solver: it works from unit tests but returns bad results from the app
 * Upload the app onto the play store
   * Fix the namespace (com.sudoku is taken)
   * Generate the required banner and hi-res icons
