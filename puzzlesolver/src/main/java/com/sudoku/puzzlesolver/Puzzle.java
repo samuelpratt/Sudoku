@@ -13,18 +13,19 @@ public class Puzzle {
 
     Puzzle(Puzzle toCopy) {
         initNumbers();
-        for (AllPoints allPoints = new AllPoints(); allPoints.hasNext(); ) {
-            Point p = allPoints.next();
-            Numbers[p.x][p.y] = toCopy.getNumber(p);
-
+        for (int x = 0; x < Puzzle.SIZE; x++) {
+            for (int y = 0; y < Puzzle.SIZE; y++) {
+                Numbers[x][y] = toCopy.getNumber(new Point(x, y));
+            }
         }
     }
 
     public Puzzle(Integer[][] problem) {
         initNumbers();
-        for (AllPoints allPoints = new AllPoints(); allPoints.hasNext(); ) {
-            Point p = allPoints.next();
-            setNumber(p, problem[p.x][p.y]);
+        for (int x = 0; x < Puzzle.SIZE; x++) {
+            for (int y = 0; y < Puzzle.SIZE; y++) {
+                Numbers[x][y] = problem[x][y];
+            }
         }
     }
 
@@ -71,14 +72,6 @@ public class Puzzle {
                 }
             }
         }
-
-        for (AllPoints allPoints = new AllPoints(); allPoints.hasNext(); ) {
-            Point currentPoint = allPoints.next();
-            if (getNumber(currentPoint) == null || getNumber(currentPoint).intValue() == -1) {
-                return currentPoint;
-            }
-        }
-
         return null;
     }
 

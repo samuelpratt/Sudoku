@@ -149,9 +149,11 @@ public class PuzzleTest {
 
         Puzzle sut = new Puzzle(original);
 
-        for (AllPoints points = new AllPoints(); points.hasNext(); ) {
-            Point currentPoint = points.next();
-            Assert.assertEquals(original.getNumber(currentPoint), sut.getNumber(currentPoint));
+        for (int x = 0; x < Puzzle.SIZE; x++) {
+            for (int y = 0; y < Puzzle.SIZE; y++) {
+                Point currentPoint = new Point(x, y);
+                Assert.assertEquals(original.getNumber(currentPoint), sut.getNumber(currentPoint));
+            }
         }
     }
 
@@ -164,9 +166,11 @@ public class PuzzleTest {
 
         Puzzle sut = new Puzzle(valid2dArray);
 
-        for (AllPoints points = new AllPoints(); points.hasNext(); ) {
-            Point currentPoint = points.next();
-            Assert.assertEquals(valid2dArray[currentPoint.x][currentPoint.y], sut.getNumber(currentPoint));
+        for (int x = 0; x < Puzzle.SIZE; x++) {
+            for (int y = 0; y < Puzzle.SIZE; y++) {
+                Point currentPoint = new Point(x, y);
+                Assert.assertEquals(valid2dArray[currentPoint.x][currentPoint.y], sut.getNumber(currentPoint));
+            }
         }
     }
 

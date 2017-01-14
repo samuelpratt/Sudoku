@@ -3,8 +3,10 @@ package com.sudoku.puzzlesolver;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
 public class SolverTest {
@@ -15,9 +17,11 @@ public class SolverTest {
         Puzzle solvedPuzzle = solvePuzzle(getPuzzle());
 
         //Assert
-        for (AllPoints points = new AllPoints(); points.hasNext(); ) {
-            Point p = points.next();
-            Assert.assertNotNull(solvedPuzzle.getNumber(p));
+        for (int x = 0; x < Puzzle.SIZE; x++) {
+            for (int y = 0; y < Puzzle.SIZE; y++) {
+                Point currentPoint = new Point(x, y);
+                Assert.assertNotNull(solvedPuzzle.getNumber(currentPoint));
+            }
         }
     }
 
@@ -28,10 +32,12 @@ public class SolverTest {
         Puzzle solvedPuzzle = solvePuzzle(getPuzzle());
 
         //Assert
-        for (AllPoints points = new AllPoints(); points.hasNext(); ) {
-            Point p = points.next();
-            Integer value = solvedPuzzle.getNumber(p);
-            Assert.assertTrue(isInRange(value));
+        for (int x = 0; x < Puzzle.SIZE; x++) {
+            for (int y = 0; y < Puzzle.SIZE; y++) {
+                Point currentPoint = new Point(x, y);
+                Integer value = solvedPuzzle.getNumber(currentPoint);
+                Assert.assertTrue(isInRange(value));
+            }
         }
     }
 
@@ -42,10 +48,12 @@ public class SolverTest {
         Puzzle solvedPuzzle = solvePuzzle(getPuzzle2());
 
         //Assert
-        for (AllPoints points = new AllPoints(); points.hasNext(); ) {
-            Point p = points.next();
-            Integer value = solvedPuzzle.getNumber(p);
-            Assert.assertTrue(isInRange(value));
+        for (int x = 0; x < Puzzle.SIZE; x++) {
+            for (int y = 0; y < Puzzle.SIZE; y++) {
+                Point currentPoint = new Point(x, y);
+                Integer value = solvedPuzzle.getNumber(currentPoint);
+                Assert.assertTrue(isInRange(value));
+            }
         }
     }
 
@@ -56,7 +64,11 @@ public class SolverTest {
         Puzzle solvedPuzzle = solvePuzzle(getPuzzle());
 
         for (int x = 0; x < 9; x++) {
-            AssertNoDuplicatesInLine(solvedPuzzle, new ColumnPoints(x));
+            List<Point> colPoints = new ArrayList<>();
+            for (int y = 0; y < Puzzle.SIZE; y++) {
+                colPoints.add(new Point(x, y));
+            }
+            AssertNoDuplicatesInLine(solvedPuzzle, colPoints);
         }
 
     }
@@ -68,15 +80,20 @@ public class SolverTest {
         Puzzle solvedPuzzle = solvePuzzle(getPuzzle());
 
         for (int y = 0; y < 9; y++) {
-            AssertNoDuplicatesInLine(solvedPuzzle, new RowPoints(y));
+            List<Point> colPoints = new ArrayList<>();
+            for (int x = 0; x < Puzzle.SIZE; x++) {
+                colPoints.add(new Point(x, y));
+            }
+            AssertNoDuplicatesInLine(solvedPuzzle, colPoints);
         }
 
     }
 
-    private void AssertNoDuplicatesInLine(Puzzle solvedPuzzle, Iterator<Point> lineToTest) {
+    private void AssertNoDuplicatesInLine(Puzzle solvedPuzzle, List<Point> lineToTest) {
         HashMap<Integer, Boolean> colVals = new HashMap<>();
-        for (; lineToTest.hasNext(); ) {
-            Point p = lineToTest.next();
+        Iterator<Point> points = lineToTest.iterator();
+        for (; points.hasNext(); ) {
+            Point p = points.next();
             Integer value = solvedPuzzle.getNumber(p);
 
             if (colVals.containsKey(value))
