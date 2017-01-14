@@ -12,7 +12,7 @@ public class SolverTest {
     public void ValidPuzzle_Solve_NoNullValues() {
 
         //Arrange & Act
-        Puzzle solvedPuzzle = solvePuzzle();
+        Puzzle solvedPuzzle = solvePuzzle(getPuzzle());
 
         //Assert
         for (AllPoints points = new AllPoints(); points.hasNext(); ) {
@@ -25,7 +25,21 @@ public class SolverTest {
     public void ValidPuzzle_Solve_AllValuesInRange() {
 
         //Arrange & Act
-        Puzzle solvedPuzzle = solvePuzzle();
+        Puzzle solvedPuzzle = solvePuzzle(getPuzzle());
+
+        //Assert
+        for (AllPoints points = new AllPoints(); points.hasNext(); ) {
+            Point p = points.next();
+            Integer value = solvedPuzzle.getNumber(p);
+            Assert.assertTrue(isInRange(value));
+        }
+    }
+
+    @Test
+    public void ValidPuzzle2_Solve_AllValuesInRange() {
+
+        //Arrange & Act
+        Puzzle solvedPuzzle = solvePuzzle(getPuzzle2());
 
         //Assert
         for (AllPoints points = new AllPoints(); points.hasNext(); ) {
@@ -39,7 +53,7 @@ public class SolverTest {
     public void ValidPuzzle_Solve_NoDuplicateValuesInColumns() {
 
         //Arrange & Act
-        Puzzle solvedPuzzle = solvePuzzle();
+        Puzzle solvedPuzzle = solvePuzzle(getPuzzle());
 
         for (int x = 0; x < 9; x++) {
             AssertNoDuplicatesInLine(solvedPuzzle, new ColumnPoints(x));
@@ -51,7 +65,7 @@ public class SolverTest {
     public void ValidPuzzle_Solve_NoDuplicateValuesInRows() {
 
         //Arrange & Act
-        Puzzle solvedPuzzle = solvePuzzle();
+        Puzzle solvedPuzzle = solvePuzzle(getPuzzle());
 
         for (int y = 0; y < 9; y++) {
             AssertNoDuplicatesInLine(solvedPuzzle, new RowPoints(y));
@@ -77,8 +91,7 @@ public class SolverTest {
         return (value > 0 && value < 10);
     }
 
-    private Puzzle solvePuzzle() {
-        Integer[][] problem = getPuzzle();
+    private Puzzle solvePuzzle(Integer[][] problem) {
         Puzzle puzzle = new Puzzle(problem);
 
         Solver solver = new Solver(puzzle);
@@ -100,6 +113,22 @@ public class SolverTest {
                 {7, null, null, null, 8, null, null, 4, 6},
                 {6, null, null, null, 1, 2, null, null, null},
                 {9, 3, null, null, null, null, 7, 1, null}};
+    }
+
+    private Integer[][] getPuzzle2() {
+        return new Integer[][]{
+                {8, null, null, null, null, null, null, null, null},
+                {null, null, 7, 5, null, null, null, null, 9},
+                {null, 3, null, null, null, null, 1, 8, null},
+
+                {null, 6, null, null, null, 1, null, 5, null},
+                {null, null, 9, null, 4, null, null, null, null},
+                {null, null, null, 7, 5, null, null, null, null},
+
+                {null, 2, null, null, 7, null, null, null, 4},
+                {null, null, null, null, null, 3, 6, 1, null},
+                {null, null, null, null, null, null, 8, null, null},
+        };
     }
 
 

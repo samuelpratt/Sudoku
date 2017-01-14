@@ -63,6 +63,15 @@ public class Puzzle {
     }
 
     Point findNextUnassignedLocation() {
+        for (int x = 0; x < Puzzle.SIZE; x++) {
+            for (int y = 0; y < Puzzle.SIZE; y++) {
+                Integer number = this.Numbers[x][y];
+                if (number == null || number.intValue() == -1) {
+                    return new Point(x, y);
+                }
+            }
+        }
+
         for (AllPoints allPoints = new AllPoints(); allPoints.hasNext(); ) {
             Point currentPoint = allPoints.next();
             if (getNumber(currentPoint) == null || getNumber(currentPoint).intValue() == -1) {
@@ -79,9 +88,8 @@ public class Puzzle {
     }
 
     private boolean isRowConflict(int y, Integer number) {
-        for (RowPoints rowPoints = new RowPoints(y); rowPoints.hasNext(); ) {
-            Point rowPoint = rowPoints.next();
-            Integer pointVal = getNumber(rowPoint);
+        for (int x = 0; x < Puzzle.SIZE; x++) {
+            Integer pointVal = this.Numbers[x][y];
             if (pointVal == null) continue;
             if (pointVal.intValue() == number.intValue())
                 return true;
@@ -90,9 +98,8 @@ public class Puzzle {
     }
 
     private boolean isColumnConflict(int x, Integer number) {
-        for (ColumnPoints colPoints = new ColumnPoints(x); colPoints.hasNext(); ) {
-            Point colPoint = colPoints.next();
-            Integer pointVal = getNumber(colPoint);
+        for (int y = 0; y < Puzzle.SIZE; y++) {
+            Integer pointVal = this.Numbers[x][y];
             if (pointVal == null) continue;
             if (pointVal.intValue() == number.intValue())
                 return true;

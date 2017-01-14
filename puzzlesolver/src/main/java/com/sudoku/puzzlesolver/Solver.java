@@ -6,7 +6,6 @@ package com.sudoku.puzzlesolver;
 public class Solver {
     private Puzzle originalPuzzle;
 
-
     public Solver(Puzzle puzzle) {
         this.originalPuzzle = puzzle;
     }
@@ -32,6 +31,4 @@ public class Solver {
         }
         return false; // this triggers backtracking from early decisions
     }
-
-
 }
