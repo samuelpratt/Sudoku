@@ -76,9 +76,8 @@ public class TakeAPictureActivity extends Activity{
             Bitmap imageBitmap = getCameraImageFromStorage();
             setImage(imageBitmap);
 
-            PuzzleScanner puzzleScanner = new PuzzleScanner(imageBitmap, this.getApplicationContext());
             ImageView imageView = (ImageView)findViewById(R.id.PreviewImageView);
-            //ToDO: push this down into the constructor
+            PuzzleScanner puzzleScanner = new PuzzleScanner(imageBitmap, this.getApplicationContext());
             String[] methodChain = new String[]{"getThreshold", "getLargestBlob", "getHoughLines", "getOutLine", "extractPuzzle"};
             UpdateImageTask updateImageTask = new UpdateImageTask(imageView, puzzleScanner, methodChain, this);
             updateImageTask.execute();
@@ -153,6 +152,7 @@ class UpdateImageTask extends AsyncTask<Void, Void, Bitmap> {
         this.methodChain = methodChain;
     }
 
+
     @Override
     protected Bitmap doInBackground(Void... voids) {
         Bitmap result = null;
@@ -177,13 +177,13 @@ class UpdateImageTask extends AsyncTask<Void, Void, Bitmap> {
         updateImage(bitmap);
         String[] newMethodChain = getNewMethodChain(methodChain);
         if (noMoreMethodsInChain(newMethodChain)) {
-            parsePuzzleAndControlBackToMainActicity();
+            parsePuzzleAndControlBackToMainActivity();
             return;
         }
         executeNextStepInMethodChain(newMethodChain);
     }
 
-    private void parsePuzzleAndControlBackToMainActicity() {
+    private void parsePuzzleAndControlBackToMainActivity() {
         Integer[][] puzzle = null;
         try {
             puzzle = puzzleScannerReference.get().getPuzzle();
