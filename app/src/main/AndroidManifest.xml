@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sudoku">
+    package="uk.co.samuelpratt.sudoku">
 
     <application
         android:allowBackup="true"
@@ -18,7 +18,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.sudoku.fileprovider"
+            android:authorities="uk.co.samuelpratt.sudoku.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
