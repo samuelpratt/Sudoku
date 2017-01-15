@@ -189,7 +189,7 @@ However if you want to use this there's a bit of work in getting everything set 
 
 The training data is from https://github.com/tesseract-ocr/tessdata. I've only included the english file i.e. https://github.com/tesseract-ocr/tessdata/blob/master/eng.traineddata
 
-## //TODO:
+# //TODO:
 
 * ~~Work out how to create a basic Android App~~
 * ~~Take a picture and show a preview~~
