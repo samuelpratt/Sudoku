@@ -209,10 +209,6 @@ android {
 
 ```
  
-### Install the NDK
- 
-This is required for Tess-Two. See https://developer.android.com/ndk/guides/index.html#download-ndk
- 
 ### Tess-Two
  
 You don't need to do anything to include the library other than add a Mavern reference to it in the build.gradle of the
